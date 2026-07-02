@@ -1,0 +1,56 @@
+# Developer Workflows
+
+Knowing the tools is one thing. Weaving them into a smooth daily rhythm is what actually makes you fast. This page is the practical playbook.
+
+## The master skill: manage context
+
+Claude has a limited context window, and its quality drops as that window fills with old messages, file reads, and command output. Almost every habit below exists to protect that context. Treat it as your scarcest resource.
+
+## Give Claude a way to check its own work
+
+This is the single highest-leverage habit. Left alone, Claude stops when work "looks done." If you give it something that returns pass or fail, a test suite, a build, a linter, a screenshot to compare, it will iterate until the check passes, instead of you being the one who keeps finding the bugs.
+
+- Weak: "Write a function that validates emails."
+- Strong: "Write a validateEmail function. Test cases: user@example.com is valid, 'invalid' is not, user@.com is not. Run the tests after implementing and fix any failures."
+
+Ask Claude to show evidence: the test output, the command it ran. Not just "done."
+
+## The core loop: explore, plan, code, commit
+
+1. **Explore** in plan mode. "Read `/src/auth` and explain how sessions and login work." No changes yet.
+2. **Plan.** "I want to add Google login. What files change, and what is the flow? Make a plan." Press `Ctrl+G` to edit the plan yourself.
+3. **Code.** Leave plan mode. "Implement your plan. Write tests for the callback, run the suite, fix failures."
+4. **Commit.** "Commit with a clear message and open a PR."
+
+Skip the plan for one-sentence changes. Use it whenever the approach is uncertain or the change spans several files.
+
+## Be specific in your prompts
+
+The more precise your instruction, the fewer corrections you make later.
+
+- Scope it: "Write a test for foo.py covering the logged-out case. Avoid mocks."
+- Point to a pattern: "Look at how HotDogWidget.php works and follow that pattern."
+- Describe the symptom: "Login fails after session timeout. Check `src/auth`, especially token refresh. Write a failing test that reproduces it, then fix it."
+
+Feed it rich context: reference files with `@`, paste screenshots, give URLs, or pipe data in with `cat error.log | claude`.
+
+## Debug the root cause
+
+Give Claude the actual error text and tell it what you want: "The build fails with this error: [paste]. Fix the root cause, do not just suppress it, and verify the build passes." For visual bugs, paste a screenshot and ask it to reproduce, fix, screenshot the result, and compare.
+
+## Manage the session actively
+
+- **Course-correct early.** Press `Esc` to stop Claude mid-action. Tight, quick feedback beats one giant prompt.
+- **`/clear` between unrelated tasks** so old context does not bleed in.
+- **The two-correction rule.** If you have corrected Claude twice on the same thing, the context is polluted. `/clear` and restart with a sharper prompt that includes what you just learned. A clean session with a good prompt beats a long messy one.
+- **Use subagents for investigation.** "Use subagents to explore how token refresh works" keeps the noise out of your main window.
+- **Review with fresh eyes.** A new session, or `/code-review`, reviews code better than the session that wrote it. Tell reviewers to flag only correctness and requirement gaps, so you do not drown in style nitpicks.
+
+## Scaling up
+
+- `claude -p "prompt"` runs headless, perfect for scripts, pre-commit hooks, and CI.
+- Run parallel sessions with git worktrees, the desktop app, or the web, so several Claudes work on different tasks at once.
+
+Get these habits into your fingers and the tools stop feeling like tools. They feel like leverage. Now learn the traps in [Common Mistakes](/docs/mistakes).
+
+**Official link:** [Best practices](https://code.claude.com/docs/en/best-practices)
