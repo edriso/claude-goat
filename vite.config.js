@@ -4,5 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Served from https://edriso.github.io/claude-goat/ on GitHub Pages.
+  base: '/claude-goat/',
   plugins: [react(), tailwindcss()],
 })
