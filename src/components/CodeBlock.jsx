@@ -12,7 +12,7 @@ export default function CodeBlock({ children, ...props }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 1600)
     } catch {
-      /* clipboard blocked — no-op */
+      /* clipboard blocked, no-op */
     }
   }
 

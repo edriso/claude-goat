@@ -40,7 +40,7 @@ export const nav = [
     title: 'Models & Platform',
     icon: '🧠',
     items: [
-      { slug: 'models', title: 'The Claude Family', blurb: 'Opus, Sonnet, Haiku, Fable — pick the right one.' },
+      { slug: 'models', title: 'The Claude Family', blurb: 'Opus, Sonnet, Haiku, Fable: pick the right one.' },
       { slug: 'api-basics', title: 'Claude API Basics', blurb: 'Build your own apps on Claude.' },
       { slug: 'mcp-deep', title: 'MCP Deep Dive', blurb: 'Tools, resources, and prompts explained.' },
     ],
@@ -65,7 +65,7 @@ export const nav = [
   },
 ]
 
-/** Flat, ordered list of all doc items — used for routing and prev/next. */
+/** Flat, ordered list of all doc items, used for routing and prev/next. */
 export const flatDocs = nav.flatMap((section) =>
   section.items.map((item) => ({ ...item, section: section.title })),
 )
