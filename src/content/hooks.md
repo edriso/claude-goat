@@ -6,10 +6,10 @@
 
 A hook is a shell command (or script) that Claude Code runs automatically at a fixed point in its lifecycle. Because they are deterministic, hooks are perfect for guarantees like:
 
-- Always format and lint after any file edit.
+- Always format code after any file edit.
 - Never allow a write to the `migrations/` folder.
 - Run the test suite before a turn is allowed to finish.
-- Load project context when a session starts.
+- Load project context, or scan for leaked secrets, when a session starts.
 
 ## When hooks can fire
 
@@ -56,9 +56,13 @@ file=$(echo "$input" | jq -r '.tool_input.file_path')
 npx prettier --write "$file"
 ```
 
+## Keep PostToolUse hooks light
+
+Auto-formatting after an edit is a great fit. But be careful running an error-*reporting* linter or your whole test suite after every single edit. Claude is often midway through a set of changes, so the hook flags problems it was about to fix anyway, and feeding those errors back on every step can send it chasing its own tail. These hooks also run one at a time and block the turn, so heavy ones slow you down. Rule of thumb: silent auto-fixers and formatters after each edit, yes; noisy checks that report failures, save for a single `Stop` hook at the end of the turn.
+
 ## Blocking bad actions
 
-A `PreToolUse` hook can stop something before it happens. If your script exits with code `2`, the action is blocked and whatever it printed to standard error is sent back to Claude as feedback. This is how you enforce "never run `rm -rf`" or "do not touch protected folders."
+A `PreToolUse` hook can stop something before it happens. If your script exits with code `2`, the action is blocked and whatever it printed to standard error is sent back to Claude as feedback. This is how you enforce hard rules that a written instruction can never truly guarantee: "never run `rm -rf`", "never `git push` to main", or "do not touch protected folders." The point is not just safety, it is keeping a human approval step on the actions that matter.
 
 ## The easiest way to write one
 

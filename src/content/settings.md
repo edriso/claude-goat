@@ -28,6 +28,21 @@ A useful starter, with a schema line that gives you editor autocomplete:
 
 That example sets a default model, auto-accepts edits, pre-approves your lint and test commands so Claude stops asking, and forbids reading secret files entirely.
 
+## Turn off the commit signature
+
+By default, Claude adds an attribution line to the git commits and pull requests it creates. Asking it not to in `CLAUDE.md` works only *most* of the time. The dependable fix is a setting, which always wins over a written request:
+
+```json
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}
+```
+
+Empty strings mean nothing extra gets appended to your commit messages or PR bodies. It is a good example of a wider rule: when you want something to happen every single time, reach for a setting or a [hook](/docs/hooks), not a line of instruction that Claude might forget.
+
 ## Permission modes
 
 When Claude wants to edit a file, run a command, or hit the network, it pauses to ask. Permission modes decide how often. Cycle them live with `Shift+Tab`.

@@ -69,7 +69,9 @@ If your repo already has an `AGENTS.md`, add `@AGENTS.md` at the top of your `CL
 
 ## Auto memory
 
-Claude can also keep its own notes (build quirks it discovered, your preferences) in a separate memory file, which loads each session. Toggle it with `/memory`. Think of `CLAUDE.md` as the rules *you* write, and auto memory as the notes *Claude* writes for itself.
+Claude can also keep its own notes (build quirks it discovered, your preferences) in a separate memory folder that loads each session. Think of `CLAUDE.md` as the rules *you* write, and auto memory as the notes *Claude* writes for itself. It lives in `~/.claude/projects/<project>/memory/` as a `MEMORY.md` index linking to topic files, and it is on by default.
+
+It can be genuinely handy, but it has a downside: it quietly accumulates notes you never see, and can occasionally resurface something stale. If you prefer to keep memory fully hand-maintained, turn it off. Run `/memory` and toggle it, set `"autoMemoryEnabled": false` in settings, or set the `CLAUDE_CODE_DISABLE_AUTO_MEMORY` environment variable.
 
 Next: make things happen automatically with [hooks](/docs/hooks).
 
