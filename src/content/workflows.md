@@ -57,11 +57,10 @@ Give Claude the actual error text and tell it what you want: "The build fails wi
 - **Use subagents for investigation.** "Use subagents to explore how token refresh works" keeps the noise out of your main window.
 - **Review with fresh eyes.** A new session, or `/code-review`, reviews code better than the session that wrote it. Tell reviewers to flag only correctness and requirement gaps, so you do not drown in style nitpicks.
 
-## Scaling up
+## Scaling beyond one conversation
 
-- `claude -p "prompt"` runs headless, perfect for scripts, pre-commit hooks, and CI.
-- Run parallel sessions with git worktrees, the desktop app, or the web, so several Claudes work on different tasks at once.
+When tasks are independent, or you want Claude to keep working while you step away, you can run several Claudes at once or let one run unattended. That is a toolkit of its own, covered next.
 
-Get these habits into your fingers and the tools stop feeling like tools. They feel like leverage. Now learn the traps in [Common Mistakes](/docs/mistakes).
+Get these habits into your fingers and the tools stop feeling like tools. They feel like leverage. Next, scale up with [Working in Parallel](/docs/parallel).
 
 **Official link:** [Best practices](https://code.claude.com/docs/en/best-practices)

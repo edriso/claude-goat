@@ -23,11 +23,13 @@ Stay in the main conversation instead when the work needs tight back-and-forth, 
 
 Claude Code ships with a few it uses automatically:
 
-- **Explore** does fast, read-only codebase search (runs on a fast model).
+- **Explore** does fast, read-only codebase search.
 - **Plan** does read-only research during planning mode.
 - **general-purpose** has full tools for complex, multi-step work.
 
-You can also invoke them yourself: "Use subagents to investigate how token refresh works."
+By default these inherit your session's model; a custom agent can pin its own (see below).
+
+You can also invoke them yourself: "Use subagents to investigate how token refresh works." Claude can even run several at once and merge their results, one of the [parallel patterns](/docs/parallel).
 
 ## Creating your own
 

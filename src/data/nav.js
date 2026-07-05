@@ -51,6 +51,7 @@ export const nav = [
     items: [
       { slug: 'prompting', title: 'Prompting Playbook', blurb: 'Get great results, consistently.' },
       { slug: 'workflows', title: 'Developer Workflows', blurb: 'Explore, plan, build, review, ship.' },
+      { slug: 'parallel', title: 'Working in Parallel', blurb: 'Worktrees, subagents, agent teams, headless.' },
       { slug: 'mistakes', title: 'Common Mistakes', blurb: 'Traps to avoid with AI coding.' },
     ],
   },
