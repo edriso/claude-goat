@@ -6,6 +6,17 @@ Knowing the tools is one thing. Weaving them into a smooth daily rhythm is what 
 
 Claude has a limited context window, and its quality drops as that window fills with old messages, file reads, and command output. Almost every habit below exists to protect that context. Treat it as your scarcest resource.
 
+**Clear vs. compact.** Two commands keep the window healthy, and picking the right one matters:
+
+- **`/clear`** wipes the conversation and starts fresh. Your `CLAUDE.md` and memory reload automatically, so Claude keeps your project context but forgets the chat. Reach for it when you switch to an *unrelated* task.
+- **`/compact`** keeps you in the same task but replaces the long back-and-forth with a summary, freeing up room. Use it when one piece of work is running long and the window is filling. You can steer the summary: `/compact focus on the API changes and the files we edited`.
+
+Rule of thumb: **new task, `/clear`; same task getting long, `/compact`.**
+
+**Auto-compact** is the safety net. As the window approaches full, Claude compacts on its own so the session keeps going. It works, but a summary you trigger yourself with focus instructions is usually cleaner than one made under pressure, so compact proactively before a big new stretch of work rather than waiting for it to kick in.
+
+**See what is filling the window** with `/context`. It draws a live breakdown by category (system prompt, memory files, tools and MCP servers, files you have read, the conversation) so you can spot what is eating your budget and trim it.
+
 ## Give Claude a way to check its own work
 
 This is the single highest-leverage habit. Left alone, Claude stops when work "looks done." If you give it something that returns pass or fail, a test suite, a build, a linter, a screenshot to compare, it will iterate until the check passes, instead of you being the one who keeps finding the bugs.
