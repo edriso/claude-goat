@@ -39,7 +39,41 @@ When Claude wants to edit a file, run a command, or hit the network, it pauses t
 | `plan` | Reads only, proposes a plan | Exploring before changing anything |
 | `auto` | Most things, with a safety classifier blocking risky actions | Long tasks with fewer interruptions |
 
-On top of any mode, your `allow`, `ask`, and `deny` rules always apply. There is also a `bypassPermissions` mode that skips all checks. Only use it inside an isolated container or VM, never on your real machine.
+On top of any mode, your `allow`, `ask`, and `deny` rules always apply. Deny always wins: a `deny` rule cannot be overridden by an `allow`.
+
+## Go fast without getting burned
+
+You will eventually hear about `claude --dangerously-skip-permissions` (people call it "YOLO mode"). It turns off every prompt so Claude runs anything without asking. It is the same thing as the `bypassPermissions` mode. It feels great for about five minutes, and then one bad command, or a prompt injection hidden in a file or web page Claude reads, runs with nothing to stop it. There are real stories of it wiping a home directory. The rule of thumb: **never point it at your real machine.** The only safe home for it is a throwaway container, VM, or dev container where a mistake costs you nothing.
+
+The good news is you do not need it. You can get almost all of the speed, safely, with two lists in `settings.json`:
+
+- **`allow`** the safe, repetitive commands you run all day so Claude stops asking: your linter, tests, type-checker, git status, and so on.
+- **`deny`** the things it should never touch: your secrets, and destructive shell commands.
+
+```json
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Bash(curl:*)",
+      "Bash(wget:*)"
+    ]
+  }
+}
+```
+
+That setup keeps you moving fast on the boring stuff while a real guardrail stays up around anything that could leak a key or do damage. It is the difference between skipping the seatbelt and just tuning it so it stops nagging you on the safe roads.
+
+Want an OS-level safety net on top of that? Run `/sandbox` to isolate what shell commands can read from disk and reach on the network, independent of your permission rules.
 
 ## The status line
 
@@ -76,4 +110,4 @@ Small touches like this make the tool feel like yours, and knowing your context 
 
 Next: learn what makes Claude tick with [Agent Skills](/docs/skills-intro).
 
-**Official links:** [Settings](https://code.claude.com/docs/en/settings) · [Permission modes](https://code.claude.com/docs/en/permission-modes) · [Statusline](https://code.claude.com/docs/en/statusline)
+**Official links:** [Settings](https://code.claude.com/docs/en/settings) · [Permission modes](https://code.claude.com/docs/en/permission-modes) · [Security](https://code.claude.com/docs/en/security) · [Statusline](https://code.claude.com/docs/en/statusline)

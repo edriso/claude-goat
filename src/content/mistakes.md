@@ -36,7 +36,7 @@ AI makes mistakes, and untested AI code reaches production just as easily as unt
 
 ## 9. Ignoring security
 
-AI can suggest insecure patterns: injection risks, weak auth, secrets in the wrong place. **Fix:** review for these, and use `/security-review` on your changes.
+AI can suggest insecure patterns: injection risks, weak auth, secrets in the wrong place. And skipping permission prompts entirely (`--dangerously-skip-permissions`) on your real machine invites disaster. **Fix:** review for these, use `/security-review` on your changes, and go fast the safe way with [allow and deny rules](/docs/settings).
 
 ## 10. Treating the first output as final
 
