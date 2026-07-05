@@ -58,6 +58,15 @@ The same engine powers the terminal, VS Code, JetBrains IDEs, a desktop app, the
 - `/context` shows what is filling the context window.
 - `/rewind` (or press `Esc` twice) rolls code or conversation back to a checkpoint.
 
+## Picking up where you left off
+
+Every session is saved to disk automatically, so nothing is lost when you close the terminal, and `/clear` starts a fresh conversation without deleting the old one. To return to earlier work:
+
+- `claude --continue` (or `-c`) reopens the most recent conversation in this folder.
+- `claude --resume` (or `-r`) opens a picker of your past conversations to choose from. Inside a session, `/resume` does the same.
+
+Saved conversations are kept for 30 days by default; change that with `cleanupPeriodDays` in [settings](/docs/settings). So switching tasks with `/clear` is safe: your old conversation is only a `--resume` away.
+
 Next, learn the [slash commands](/docs/slash-commands) you will reach for every day.
 
 **Official links:** [Overview](https://code.claude.com/docs/en/overview) · [How it works](https://code.claude.com/docs/en/how-claude-code-works)

@@ -34,6 +34,15 @@ Pricing is per million tokens, split into input (what you send) and output (what
 
 Always check the [official pricing page](https://docs.claude.com/en/docs/about-claude/pricing) for current numbers, since they change.
 
+## Track what you are spending
+
+Inside Claude Code, two commands show where you stand:
+
+- **`/cost`** estimates the token cost of the current session. Note: if you are on a Pro or Max subscription your usage is included in the plan, so this figure is just a rough gauge, not your actual bill.
+- **`/usage`** shows how much of your plan's limits you have used, and breaks recent usage down by subagents, skills, and MCP servers, so you can see what is eating your budget.
+
+Both are estimates from your local history. For the authoritative bill, check the [Claude Console usage page](https://platform.claude.com/usage). You can also pin a live cost readout to your [status line](/docs/settings).
+
 ## Adaptive thinking
 
 The current top models (Fable 5, Opus 4.8, Sonnet 5) use adaptive thinking: the model itself decides how much to "think" before answering, based on how hard the question is. You do not micromanage this. You can nudge it with an effort setting, and in Claude Code you can toggle thinking on or off.
