@@ -43,9 +43,20 @@ Inside Claude Code, two commands show where you stand:
 
 Both are estimates from your local history. For the authoritative bill, check the [Claude Console usage page](https://platform.claude.com/usage). You can also pin a live cost readout to your [status line](/docs/settings).
 
-## Adaptive thinking
+## Adaptive thinking and effort
 
-The current top models (Fable 5, Opus 4.8, Sonnet 5) use adaptive thinking: the model itself decides how much to "think" before answering, based on how hard the question is. You do not micromanage this. You can nudge it with an effort setting, and in Claude Code you can toggle thinking on or off.
+The current top models (Fable 5, Opus 4.8, Sonnet 5) use adaptive thinking: the model itself decides whether and how much to reason on each step, based on how hard the task is. You do not micromanage that turn by turn.
+
+What you *can* set is the overall **effort level**, which shifts the balance between speed and cost on one side and depth on the other. In Claude Code, run `/effort` (or use the slider inside `/model`):
+
+- `low`, `medium`, `high`, `xhigh`, from fastest and cheapest to deepest. `high` is the default and suits most coding.
+- `max`, the deepest, for genuinely hard problems. It is session only and can overthink, so reach for it on purpose, not by default.
+
+The first four persist across sessions; `max` resets when the session ends. (Haiku does not use effort.)
+
+### The one keyword that still matters: ultrathink
+
+You may have seen advice to write "think", "think hard", or "think harder" to make Claude reason more. That is now folklore, those phrases are just ordinary words in your prompt. The one keyword Claude Code actually recognizes is **`ultrathink`**: drop it anywhere in a prompt to ask for deeper reasoning on that single turn, without changing your session's effort setting. For anything more lasting, use `/effort`.
 
 ## A few practical facts
 

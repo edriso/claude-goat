@@ -24,7 +24,7 @@ This is the single highest-leverage habit. Left alone, Claude stops when work "l
 - Weak: "Write a function that validates emails."
 - Strong: "Write a validateEmail function. Test cases: user@example.com is valid, 'invalid' is not, user@.com is not. Run the tests after implementing and fix any failures."
 
-Ask Claude to show evidence: the test output, the command it ran. Not just "done."
+Ask Claude to show evidence: the test output, the command it ran. Not just "done." For new features, test-first (red then green) works especially well: have Claude write the tests, watch them fail, then implement until they pass.
 
 ## The core loop: explore, plan, code, commit
 
@@ -34,6 +34,12 @@ Ask Claude to show evidence: the test output, the command it ran. Not just "done
 4. **Commit.** "Commit with a clear message and open a PR."
 
 Skip the plan for one-sentence changes. Use it whenever the approach is uncertain or the change spans several files.
+
+## For big or fuzzy features, pin the spec first
+
+When a task is large or the requirements are hazy, do not let Claude start guessing. Turn it around and have it interview you: "Before writing any code, ask me the questions you need answered to build this well." Answer them, then have Claude write the agreed approach into a short spec (a plan file, or a scratch `SPEC.md`).
+
+Two payoffs: you catch misunderstandings while they are still free to fix, and you end up with a clean, self-contained brief. Hand that spec to a fresh session to implement, and it starts with exactly what it needs and none of the back-and-forth clutter.
 
 ## Be specific in your prompts
 

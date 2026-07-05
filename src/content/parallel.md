@@ -52,6 +52,14 @@ The `-p` (print) flag runs one prompt and exits: no chat, no approvals. On its o
 
 Because nobody is watching each step, use headless where the output is **easy to verify**, and put guardrails on it: restrict what it can touch with `--allowedTools`, and lean on your deny rules and [permission settings](/docs/settings). Do not point an unattended run at anything hard to undo.
 
+## Loops: let it keep going until it is done
+
+A loop is just headless work repeated: Claude does a pass, checks itself, and goes again. What makes a loop safe is not the loop, it is the **check**. Give it something that returns pass or fail (a test suite, a build, a linter) and it will iterate toward green on its own, instead of stopping at "looks done."
+
+Claude Code has a built-in `/loop` for running a prompt on a repeat, handy for polling ("check the build every few minutes and tell me what broke"). For work that should run while your machine is off, on a schedule or overnight, there are scheduled cloud agents that run on Anthropic's side and report back.
+
+You may also hear about the **Ralph loop**, a community trick that runs `claude` in a shell `while` loop, re-feeding one prompt and keeping the plan in a file on disk so each pass starts with a fresh context. People have shipped real projects with it, but it is advanced and easy to misfire: without tight scoping, a solid pass/fail check, and a sandbox, it can loop forever or burn through tokens unnoticed. Treat it as a power-user experiment, not a starting point, and reach for the built-in `/loop` and scheduled agents first.
+
 ## Which one do I use?
 
 - **One conversation** for almost everything.
@@ -59,6 +67,7 @@ Because nobody is watching each step, use headless where the output is **easy to
 - **Subagent fan-out** when a single task splits into independent, read-heavy pieces.
 - **Agent teams** only when agents must actually coordinate, and you accept the cost.
 - **Headless** when you want it to run on a schedule or unattended, on easy-to-check work.
+- **A loop** when the work has a clear pass/fail check and should repeat until it is green.
 
 More agents is not more progress. It still has to be the *right* work. Pick the lightest pattern that does the job.
 
