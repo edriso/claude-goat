@@ -47,7 +47,7 @@ export default function Home() {
         />
         <div className="relative mx-auto max-w-5xl px-6 py-20 text-center md:py-28">
           <span className="inline-flex items-center gap-2 rounded-full border border-clay-200 bg-clay-50 px-4 py-1.5 text-sm font-medium text-clay-700 dark:border-clay-800 dark:bg-clay-900/30 dark:text-clay-300">
-            🐐 Your go-to guide, always up to date
+            🐐 Your go-to guide, grounded in the official docs
           </span>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-stone-900 sm:text-6xl dark:text-white">
             Master <span className="text-clay-500">Claude</span> and become

@@ -10,7 +10,7 @@ GOAT stands for Greatest Of All Time, but here it is also a promise about how yo
 
 - **G**et hands-on fast. You will run real commands, not just read theory.
 - **O**wn your workflow. You decide when Claude plans, edits, or reviews.
-- **A**lways up to date. This guide tracks the current tools and model names.
+- **A**nchored in the official docs. When this guide and the docs disagree, trust the docs.
 - **T**iny steps, big results. Small habits that compound into serious speed.
 
 ## How to use this guide

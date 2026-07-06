@@ -1,6 +1,6 @@
 # Claude GOAT 🐐
 
-The GOAT (Greatest Of All Time) guide to mastering **Claude**, **Claude Code**, and **Agent Skills** as a developer. A friendly, hands-on learning hub with real examples, real workflows, and up-to-date info.
+The GOAT (Greatest Of All Time) guide to mastering **Claude**, **Claude Code**, and **Agent Skills** as a developer. A friendly, hands-on learning hub with real examples and real workflows, grounded in the official docs.
 
 Built as a personal go-to reference to get genuinely productive with Claude and become a 10x developer.
 
