@@ -71,6 +71,6 @@ You may also hear about the **Ralph loop**, a community trick that runs `claude`
 
 More agents is not more progress. It still has to be the *right* work. Pick the lightest pattern that does the job.
 
-Next: the traps to avoid in [Common Mistakes](/docs/mistakes).
+Next: give Claude eyes on the running app with [Browser Automation and QA](/docs/browser-automation).
 
 **Official links:** [Subagents](https://code.claude.com/docs/en/sub-agents) · [Worktrees](https://code.claude.com/docs/en/worktrees) · [Agent teams](https://code.claude.com/docs/en/agent-teams) · [Headless](https://code.claude.com/docs/en/headless)

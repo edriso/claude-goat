@@ -52,6 +52,7 @@ export const nav = [
       { slug: 'prompting', title: 'Prompting Playbook', blurb: 'Get great results, consistently.' },
       { slug: 'workflows', title: 'Developer Workflows', blurb: 'Explore, plan, build, review, ship.' },
       { slug: 'parallel', title: 'Working in Parallel', blurb: 'Worktrees, subagents, agent teams, headless.' },
+      { slug: 'browser-automation', title: 'Browser Automation & QA', blurb: 'Give Claude a browser to test and review in.' },
       { slug: 'mistakes', title: 'Common Mistakes', blurb: 'Traps to avoid with AI coding.' },
     ],
   },
