@@ -52,6 +52,16 @@ The `-p` (print) flag runs one prompt and exits: no chat, no approvals. On its o
 
 Because nobody is watching each step, use headless where the output is **easy to verify**, and put guardrails on it: restrict what it can touch with `--allowedTools`, and lean on your deny rules and [permission settings](/docs/settings). Do not point an unattended run at anything hard to undo.
 
+A good headless job is small and locked down. To have Claude write your commit messages, for example, hand it only the git tools it needs and pick a fast model:
+
+```text
+claude -p "Look at my staged changes and write a commit" \
+  --allowedTools "Bash(git diff *),Bash(git log *),Bash(git commit *)" \
+  --model haiku
+```
+
+`--allowedTools` uses [permission-rule syntax](/docs/settings), so `Bash(git commit *)` allows anything that starts with `git commit` and nothing else. The space before the `*` matters: it turns on prefix matching. For CI and scripts, add `--bare`, which skips auto-discovery of hooks, skills, plugins, MCP servers, and `CLAUDE.md` so only the flags you pass take effect and the run behaves the same on every machine. It is the recommended mode for scripted calls and is set to become the default for `-p`. And if you would rather the commit not carry the "Generated with Claude Code" footer, strip it with `--settings '{"attribution":{"commit":""}}'`.
+
 ## Loops: let it keep going until it is done
 
 A loop is just headless work repeated: Claude does a pass, checks itself, and goes again. What makes a loop safe is not the loop, it is the **check**. Give it something that returns pass or fail (a test suite, a build, a linter) and it will iterate toward green on its own, instead of stopping at "looks done."
