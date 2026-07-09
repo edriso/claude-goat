@@ -60,6 +60,7 @@ Everything below the frontmatter is the actual instructions.
 - A **testing** Skill that captures how your project writes and structures tests.
 - A **style guide** Skill so generated docs match your company voice.
 - A **deploy** Skill that walks the exact steps and safety checks for shipping.
+- A **ticket runner** Skill that preps a whole class of ticket: gathers your team's context and legacy-code references, pulls the relevant design from Figma over [MCP](/docs/mcp), and sets up the workspace before you write a line.
 
 ## Skills and slash commands
 

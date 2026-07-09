@@ -62,6 +62,8 @@ claude -p "Look at my staged changes and write a commit" \
 
 `--allowedTools` uses [permission-rule syntax](/docs/settings), so `Bash(git commit *)` allows anything that starts with `git commit` and nothing else. The space before the `*` matters: it turns on prefix matching. For CI and scripts, add `--bare`, which skips auto-discovery of hooks, skills, plugins, MCP servers, and `CLAUDE.md` so only the flags you pass take effect and the run behaves the same on every machine. It is the recommended mode for scripted calls and is set to become the default for `-p`. And if you would rather the commit not carry the "Generated with Claude Code" footer, strip it with `--settings '{"attribution":{"commit":""}}'`.
 
+Recipes like this drop neatly into a shell function or alias, so writing a commit becomes a one-word command. That also keeps chores out of your interactive session: every small ask you make there spends context you wanted for the real task, while a `-p` call starts fresh, does its one job, and exits.
+
 ## Loops: let it keep going until it is done
 
 A loop is just headless work repeated: Claude does a pass, checks itself, and goes again. What makes a loop safe is not the loop, it is the **check**. Give it something that returns pass or fail (a test suite, a build, a linter) and it will iterate toward green on its own, instead of stopping at "looks done."
@@ -69,6 +71,12 @@ A loop is just headless work repeated: Claude does a pass, checks itself, and go
 Claude Code has a built-in `/loop` for running a prompt on a repeat, handy for polling ("check the build every few minutes and tell me what broke"). For work that should run while your machine is off, on a schedule or overnight, there are scheduled cloud agents that run on Anthropic's side and report back.
 
 You may also hear about the **Ralph loop**, a community trick that runs `claude` in a shell `while` loop, re-feeding one prompt and keeping the plan in a file on disk so each pass starts with a fresh context. People have shipped real projects with it, but it is advanced and easy to misfire: without tight scoping, a solid pass/fail check, and a sandbox, it can loop forever or burn through tokens unnoticed. Treat it as a power-user experiment, not a starting point, and reach for the built-in `/loop` and scheduled agents first.
+
+## How many at once?
+
+Everything above scales the number of Claudes. It does not scale you. Each interactive session still needs its diffs read, its decisions checked, and its result merged, and you are the one doing all of that.
+
+Teams who work this way daily tend to land on the same number: **two or three active sessions** is the sweet spot. Past that, you are not multiplying output, you are dividing attention. Reviews get shallower, context switching gets heavier, and the day ends with more open branches but less shipped work. If a task is well-defined enough to run without your attention, give it a solid pass/fail check and make it headless. Otherwise, finish something before starting something new.
 
 ## Which one do I use?
 
