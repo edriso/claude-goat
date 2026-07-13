@@ -43,6 +43,7 @@ export const nav = [
       { slug: 'models', title: 'The Claude Family', blurb: 'Opus, Sonnet, Haiku, Fable: pick the right one.' },
       { slug: 'api-basics', title: 'Claude API Basics', blurb: 'Build your own apps on Claude.' },
       { slug: 'mcp-deep', title: 'MCP Deep Dive', blurb: 'Tools, resources, and prompts explained.' },
+      { slug: 'code-execution', title: 'Code Execution & Code Mode', blurb: 'Let Claude write code to call tools, not chain them.' },
     ],
   },
   {

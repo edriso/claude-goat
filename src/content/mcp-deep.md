@@ -68,6 +68,6 @@ MCP is why the ecosystem grows so fast. Anyone can publish a server for their pr
 
 Want to build one for real? Anthropic's free MCP course walks you through it in Python.
 
-Next, level up how you actually work: the [Prompting Playbook](/docs/prompting).
+Next, see how agents call all of this efficiently: [Code Execution & Code Mode](/docs/code-execution).
 
 **Official links:** [modelcontextprotocol.io](https://modelcontextprotocol.io) · [Architecture](https://modelcontextprotocol.io/docs/learn/architecture)
