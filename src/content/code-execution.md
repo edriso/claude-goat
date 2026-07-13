@@ -24,13 +24,25 @@ This flips three things:
 
 Anthropic reports the transcript example dropping from 150,000 tokens to about 2,000, a 98.7% reduction, by writing code instead of chaining calls.
 
+Because each tool is just an async function, code can also express flows that a flat list of tool calls cannot handle cleanly. A human-in-the-loop approval gate, for instance, is ordinary control flow:
+
+```js
+async function refund(user, amount) {
+  // small refunds go straight through; large ones wait for a human in Slack
+  const approved = amount < 10 || await askForApprovalInSlack(user, amount);
+  if (approved) await issueRefund(user, amount);
+}
+```
+
+The older way to get this is to wire each step into an explicit graph of nodes and edges, with approvals as breakpoints between them (community frameworks like LangGraph do this). Code execution collapses that graph into a single program the model writes and runs in one pass.
+
 ## Where you will meet it
 
 **Programmatic tool calling (Claude API).** An official Claude feature: Claude writes code that calls your tools inside a sandbox, rather than making a round trip through the model for every call. Tool results consumed inside the sandbox do not count toward your token usage; only the final result does. Anthropic reports that on agentic-search benchmarks it improved results by about 11% while using 24% fewer input tokens, and that requests carrying 10 to 49 tools typically save 20% to 40% of tokens.
 
 **Code execution with MCP (Anthropic guidance).** The same idea applied to MCP servers: expose each server as a code API the agent imports and calls, so it loads tool definitions on demand and keeps intermediate data in the execution environment. This also helps privacy, since raw data stays in the sandbox instead of passing through the prompt.
 
-**Code Mode (Cloudflare, community).** The technique that popularized the name. Cloudflare's Agents SDK fetches an MCP server's schema, turns it into a typed TypeScript API, and asks the model to write code against it. They report giving an agent an entire API in about 1,000 tokens, a 99.9% cut versus loading every tool definition. This one is a third-party approach, not an Anthropic product, but the Anthropic features above are built on the same insight.
+**Code Mode (Cloudflare, community).** The technique that popularized the name. Rather than exposing every tool, Cloudflare's Agents SDK gives the model just two: `search`, to discover the available methods and their types, and `execute`, to run validated TypeScript against a typed SDK in a sandboxed V8 isolate, chaining the whole workflow in one pass. They report giving an agent an entire API in about 1,000 tokens, a 99.9% cut versus loading every tool definition. It is a third-party approach, not an Anthropic product, but the Anthropic features above are built on the same insight.
 
 ## Why it works: use deterministic tools for deterministic work
 
@@ -42,4 +54,4 @@ You do not need this for a single tool call. It earns its keep when you are chai
 
 Next: level up how you actually work with the [Prompting Playbook](/docs/prompting).
 
-**Official links:** [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) · [Programmatic tool calling](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) · [Cloudflare Code Mode](https://blog.cloudflare.com/code-mode-mcp/)
+**Official links:** [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) · [Programmatic tool calling](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) · [Cloudflare Code Mode](https://blog.cloudflare.com/code-mode-mcp/) · [LangGraph quickstart](https://docs.langchain.com/oss/javascript/langgraph/quickstart)
