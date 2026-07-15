@@ -16,7 +16,7 @@ Each failed correction adds more clutter to the context, making things worse, no
 
 ## 4. A bloated CLAUDE.md, or too many tools
 
-It feels like more rules and more Skills should help. The opposite happens: important instructions get lost in the noise and Claude follows them less. **Fix:** prune ruthlessly. For every line ask, "would removing this cause a mistake?" If not, cut it.
+It feels like more rules and more Skills should help. The opposite happens: a model reliably follows only a limited number of instructions at once, so every rule you add dilutes the others, and important ones get lost in the noise. **Fix:** prune ruthlessly. For every line ask, "would removing this cause a mistake?" If not, cut it.
 
 ## 5. Trusting without verifying
 

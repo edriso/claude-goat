@@ -15,6 +15,8 @@ Rule of thumb: **new task, `/clear`; same task getting long, `/compact`.**
 
 **Auto-compact** is the safety net. As the window approaches full, Claude compacts on its own so the session keeps going. It works, but a summary you trigger yourself with focus instructions is usually cleaner than one made under pressure, so compact proactively before a big new stretch of work rather than waiting for it to kick in.
 
+**The handoff doc** is the community's manual alternative to compacting. Before ending a long session, ask Claude to "write a handoff doc for a fresh session: what we are working on, decisions made, what is next." Then `/clear` and have the new session read that file first. Unlike a compaction summary, you can read and edit exactly what survives.
+
 **See what is filling the window** with `/context`. It draws a live breakdown by category (system prompt, memory files, tools and MCP servers, files you have read, the conversation) so you can spot what is eating your budget and trim it.
 
 ## Give Claude a way to check its own work
@@ -39,7 +41,7 @@ Skip the plan for one-sentence changes. Use it whenever the approach is uncertai
 
 When a task is large or the requirements are hazy, do not let Claude start guessing. Turn it around and have it interview you: "Before writing any code, ask me the questions you need answered to build this well." Answer them, then have Claude write the agreed approach into a short spec (a plan file, or a scratch `SPEC.md`).
 
-Two payoffs: you catch misunderstandings while they are still free to fix, and you end up with a clean, self-contained brief. Hand that spec to a fresh session to implement, and it starts with exactly what it needs and none of the back-and-forth clutter.
+Two payoffs: you catch misunderstandings while they are still free to fix, and you end up with a clean, self-contained brief. Hand that spec to a fresh session to implement, and it starts with exactly what it needs and none of the back-and-forth clutter. This habit scales into a full methodology, [spec-driven development](/docs/spec-driven), covered two pages ahead.
 
 ## Be specific in your prompts
 
@@ -65,8 +67,8 @@ Give Claude the actual error text and tell it what you want: "The build fails wi
 
 ## Scaling beyond one conversation
 
-When tasks are independent, or you want Claude to keep working while you step away, you can run several Claudes at once or let one run unattended. That is a toolkit of its own, covered next.
+When tasks are independent, or you want Claude to keep working while you step away, you can run several Claudes at once or let one run unattended. That toolkit is covered in [Working in Parallel](/docs/parallel).
 
-Get these habits into your fingers and the tools stop feeling like tools. They feel like leverage. Next, scale up with [Working in Parallel](/docs/parallel).
+Get these habits into your fingers and the tools stop feeling like tools. They feel like leverage. Next: turn the spec habit into a repeatable pipeline with [Spec-Driven Development](/docs/spec-driven).
 
 **Official link:** [Best practices](https://code.claude.com/docs/en/best-practices)
