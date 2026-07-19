@@ -59,6 +59,18 @@ export const nav = [
     ],
   },
   {
+    title: 'AI Engineering',
+    icon: '🔬',
+    items: [
+      { slug: 'ai-code-review', title: 'AI Code Review', blurb: 'Fresh-session reviews, rubrics, and verified findings.' },
+      { slug: 'evals', title: 'Evaluating AI Output', blurb: 'Evals and regression suites instead of vibes.' },
+      { slug: 'structured-outputs', title: 'Structured Outputs & Tool Calling', blurb: 'Get JSON you can parse, reliably.' },
+      { slug: 'rag-embeddings', title: 'RAG & Embeddings', blurb: 'Answer from your own data, in plain words.' },
+      { slug: 'cost-caching', title: 'Cost, Latency & Caching', blurb: 'Context discipline is money.' },
+      { slug: 'ai-security', title: 'Prompt Injection & AI Security', blurb: 'Untrusted content is data, not instructions.' },
+    ],
+  },
+  {
     title: 'Resources',
     icon: '📚',
     items: [

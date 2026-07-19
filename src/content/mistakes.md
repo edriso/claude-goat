@@ -46,4 +46,4 @@ The first answer is a draft. Missing an easy improvement because you accepted it
 
 Use Claude as a collaborative partner, not an autopilot. Stay engaged, always keep a check it can run against, and manage your context deliberately. Do that and you get all the speed without the sloppiness.
 
-You have now covered the essentials. Head to the [free courses](/docs/courses) to go deeper, or grab the [cheat sheet](/docs/cheatsheet) to keep handy.
+You have now covered the essentials. Next up: the AI Engineering section, starting with [AI Code Review](/docs/ai-code-review). Or head to the [free courses](/docs/courses) to go deeper, and grab the [cheat sheet](/docs/cheatsheet) to keep handy.
