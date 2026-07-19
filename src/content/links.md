@@ -19,6 +19,7 @@ Every official resource worth bookmarking, in one place. When something in this 
 - [Settings](https://code.claude.com/docs/en/settings)
 - [Permission modes](https://code.claude.com/docs/en/permission-modes)
 - [Best practices](https://code.claude.com/docs/en/best-practices)
+- [Prompt library](https://code.claude.com/docs/en/prompt-library)
 
 ## Models and the API
 
@@ -28,6 +29,8 @@ Every official resource worth bookmarking, in one place. When something in this 
 - [API overview](https://docs.claude.com/en/api/overview)
 - [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 - [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+- [Console prompting tools](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools)
+- [General prompt library](https://platform.claude.com/docs/en/resources/prompt-library/library)
 
 ## Model Context Protocol
 
@@ -38,7 +41,8 @@ Every official resource worth bookmarking, in one place. When something in this 
 
 - [Anthropic Academy (free courses)](https://anthropic.skilljar.com/)
 - [Anthropic learning hub](https://www.anthropic.com/learn)
-- [Anthropic Cookbook (code recipes)](https://github.com/anthropics/anthropic-cookbook)
+- [Claude Cookbooks (code recipes)](https://github.com/anthropics/claude-cookbooks)
+- [Anthropic courses (runnable notebooks)](https://github.com/anthropics/courses)
 - [Interactive prompt engineering tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
 
 ## Tools

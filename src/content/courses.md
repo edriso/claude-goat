@@ -38,4 +38,6 @@ Do not binge them. Pick one, finish it, and immediately apply it to a real task 
 
 The catalog grows over time, so browse [the full list](https://anthropic.skilljar.com/) for anything new.
 
+Prefer learning in code? The [anthropics/courses](https://github.com/anthropics/courses) notebooks on GitHub walk through API fundamentals, prompt engineering, real-world prompting, prompt evaluations, and tool use, all as runnable Jupyter notebooks.
+
 **Also great:** [anthropic.com/learn](https://www.anthropic.com/learn) is the learning hub, and the [links page](/docs/links) here collects every official resource in one spot.
