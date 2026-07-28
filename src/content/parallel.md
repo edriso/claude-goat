@@ -89,6 +89,6 @@ Teams who work this way daily tend to land on the same number: **two or three ac
 
 More agents is not more progress. It still has to be the *right* work. Pick the lightest pattern that does the job.
 
-Next: give Claude eyes on the running app with [Browser Automation and QA](/docs/browser-automation).
+Next: keep all of that from eating your budget with [Tokens, Limits and Usage](/docs/token-optimization).
 
 **Official links:** [Subagents](https://code.claude.com/docs/en/sub-agents) · [Worktrees](https://code.claude.com/docs/en/worktrees) · [Agent teams](https://code.claude.com/docs/en/agent-teams) · [Headless](https://code.claude.com/docs/en/headless)

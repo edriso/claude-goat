@@ -37,6 +37,8 @@ Giving the reason helps Claude generalize to your true goal.
 
 Examples are one of the most reliable ways to steer output. Aim for three to five. Make them relevant to your real use case, diverse enough to cover edge cases, and clearly separated (wrapping each in tags like `<example>` helps).
 
+One boundary on this. Examples are still the best way to pin down *format and style*, but Anthropic now advises against them for teaching Claude how to use a tool, because an example narrows the space Claude will explore. Design the tool clearly instead. See [Context Engineering](/docs/context-engineering).
+
 ## 5. Let Claude think
 
 For anything with real reasoning, coding, or math, give Claude room to work through it. With today's models you can simply say "think this through carefully" and ask it to check its own answer before finishing: "Before you finish, verify your solution against these criteria."
@@ -90,6 +92,65 @@ The upgrade on that habit: decide what "good" means before you start tuning. The
 - **Do not over-pressure.** Old prompts leaned on "CRITICAL, YOU MUST." Newer models over-react to that. Normal, clear phrasing works better.
 - **Watch for over-engineering.** Newer models sometimes add abstractions you did not ask for. If you see that, add: "Avoid over-engineering. Only make changes I asked for or that are clearly necessary."
 
+## Make a style stick instead of re-asking
+
+If you are correcting the same thing about tone or format every turn, the prompt is the wrong place for it. Claude Code has **output styles**, which edit the system prompt itself and add per-turn reminders to hold the line.
+
+Pick one with `/config`, under **Output style**. Three built-ins ship alongside Default: **Proactive** (act, do not pause for routine decisions), **Explanatory** (adds teaching notes as it works), and **Learning** (leaves you `TODO(human)` markers to fill in). You can also set the field directly:
+
+```json
+{
+  "outputStyle": "Explanatory"
+}
+```
+
+A custom style is a markdown file in `~/.claude/output-styles/` or `.claude/output-styles/`:
+
+```markdown
+---
+name: Terse reviewer
+description: Short, plain, no hedging filler
+keep-coding-instructions: true
+---
+
+Report findings as a flat list. One sentence per finding, then the file and line.
+State uncertainty plainly ("I am not sure this is the cause") rather than padding.
+```
+
+Two things to know. `keep-coding-instructions: true` matters: without it, a custom style *replaces* Claude Code's built-in software engineering instructions, which is right for a writing assistant and wrong for a code reviewer. And the style is read once at session start, so a change needs `/clear` or a new session.
+
+Why not just put it in `CLAUDE.md`? Because the docs are explicit that `CLAUDE.md` arrives as a user message *after* the system prompt, with no guarantee of strict compliance. For "how you talk to me," an output style holds better. For "how this project works," `CLAUDE.md` is still the right home.
+
+## A community trick: ASD-STE100
+
+A tip that went around in July 2026: tell Claude **"only report to me in ASD-STE100 Simplified Technical English"** to stop it writing like a startup press release.
+
+This is a community trick, not official guidance, but there is a real standard behind it. ASD-STE100 is a controlled-language specification published by ASD, the Aerospace, Security and Defence Industries Association of Europe, and maintained by the Simplified Technical English Maintenance Group. It exists so that aircraft maintenance manuals read the same way to a technician anywhere in the world. Part 1 is 53 writing rules in 9 sections; part 2 is a controlled dictionary of roughly 900 approved words, each with one meaning and one part of speech. It is free to download from [asd-ste100.org](https://www.asd-ste100.org) on request.
+
+Naming it works as shorthand for a specific, unusually concrete set of constraints:
+
+- Maximum 20 words per sentence in procedures, 25 in descriptive text.
+- One instruction per sentence. One topic per paragraph, six sentences maximum.
+- Active voice. Imperative for instructions. No gerunds as verbs, no phrasal verbs.
+- One word, one meaning: "start", never also "begin", "commence", or "initiate".
+
+Where it falls down, and this is worth knowing before you adopt it:
+
+- **You get an approximation, not conformance.** Real STE compliance depends on that 900-word dictionary, which is not in your prompt. What you actually get is the observable surface: short sentences, active voice, no metaphors.
+- **The vocabulary is aerospace-shaped.** Its technical-word categories were built for maintenance procedures, not software.
+- **It has no register for uncertainty.** STE modality is roughly *can*, *must*, *do not*. For code review that is a real loss, because "I am not sure this is the actual cause" is exactly the sentence you want Claude to be free to write.
+- **It was built for a narrower job than yours.** The spec says it was developed for technical documentation only, and that it cannot be used alone: it assumes a house style guide and a fluent writer alongside it.
+
+So: a good trick, genuinely effective at killing the purple prose, and a blunt one. If you like it, the honest version is to borrow the constraints rather than invoke the standard, which is also what the official advice about being concrete would tell you to do:
+
+```text
+Max 20 words per sentence. Active voice. One idea per paragraph.
+No metaphors, no hype, no summary of what you just said.
+Say uncertainty plainly instead of hedging around it.
+```
+
+That is measurable, it carries no aviation baggage, and it belongs in an output style so you only write it once.
+
 ## Let the Console draft it for you
 
 The Claude Console ships three prompt tools worth knowing:
@@ -104,10 +165,12 @@ You do not have to write everything from scratch:
 
 - The [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library) collects copy-paste prompts for real development work, tagged by phase (discover, design, build, ship, operate), task, and role. They are starting points rather than scripts, and each has a "Why this works" note on the pattern behind it.
 - The [general prompt library](https://platform.claude.com/docs/en/resources/prompt-library/library) has ready-made prompts for common non-coding tasks.
-- The best practices page opens with model-specific guides for Fable 5, Sonnet 5, and Opus 4.8. When you settle on a model, read its page; it covers exactly where that model behaves differently.
+- The best practices page opens with model-specific guides for Fable 5, Sonnet 5, Opus 5, and Opus 4.8. When you settle on a model, read its page; it covers exactly where that model behaves differently.
 
 One last shift worth knowing: for agent work, what Claude can see and verify matters more than any phrasing trick. That layer, context and checks and workflow, is what the rest of this section teaches.
 
-Next: put these into a real [developer workflow](/docs/workflows).
+Next: shape the layer around your prompt with [Context Engineering](/docs/context-engineering).
 
-**Official links:** [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) · [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) · [Console prompting tools](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools) · [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library)
+**Official links:** [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) · [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) · [Console prompting tools](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools) · [Output styles](https://code.claude.com/docs/en/output-styles) · [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library)
+
+**Community link:** [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org)

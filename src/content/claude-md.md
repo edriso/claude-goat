@@ -56,6 +56,16 @@ Here is the counterintuitive part: **a bloated `CLAUDE.md` makes Claude follow i
 
 For every line, ask yourself: *"Would removing this cause Claude to make a mistake?"* If not, cut it. Do not document things Claude can read straight from the code. Keep each file lean, ideally under about 200 lines.
 
+Anthropic's own trim rule is sharper than that and worth stealing. **Cut what Claude could derive from the codebase:** directory layouts, dependency lists, architecture overviews. **Keep what it could not:** pitfalls, rationale, and conventions that differ from tool defaults. And if a chunk of guidance only matters for one kind of task, it does not belong in a file that loads on every session at all. Move it into a [Skill](/docs/skills-intro), which loads on demand.
+
+You do not have to do this by hand. Run **`/doctor`** and it proposes exactly these trims, deduplicates a local `CLAUDE.md` against the checked-in one, and offers to migrate the always-loaded guidance that survives into Skills and nested `CLAUDE.md` files. It reports first and asks before changing anything. There is more on the thinking behind it in [Context Engineering](/docs/context-engineering).
+
+## Why it is guidance, not law
+
+Worth knowing so you are not surprised: `CLAUDE.md` is delivered as a user message *after* the system prompt, not as part of it. The docs are candid that Claude reads it and tries to follow it, but there is no guarantee of strict compliance, especially for vague or conflicting instructions.
+
+So match the tool to the need. Project conventions and context belong here. A response format you want every single turn belongs in an output style ([see the Prompting Playbook](/docs/prompting)). Something that must happen every time without exception belongs in a [hook](/docs/hooks) or a [setting](/docs/settings), which are enforced rather than interpreted.
+
 ## Pulling in other files
 
 You can import other files with the `@` syntax, up to a few hops deep:

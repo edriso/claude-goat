@@ -9,7 +9,7 @@ claude              # start an interactive session
 claude "task"       # start and run a task immediately
 claude -c           # continue the most recent conversation
 claude -p "query"   # one-off query, print, exit (for scripts)
-claude doctor       # diagnose setup problems
+claude doctor       # read-only setup diagnostics, no session
 ```
 
 ## Slash commands you will use daily
@@ -17,15 +17,18 @@ claude doctor       # diagnose setup problems
 | Command | Does |
 |---|---|
 | `/help` | List everything |
-| `/clear` | Fresh conversation |
+| `/clear` | Fresh conversation (and it costs nothing) |
 | `/compact` | Summarize to free up context |
 | `/context` | See what fills your context |
+| `/usage` | Token use and how much of your plan is left |
+| `/doctor` | Full checkup: trims CLAUDE.md, audits context cost |
 | `/init` | Generate a starter CLAUDE.md |
 | `/plan` | Enter planning mode |
 | `/model` | Switch model |
+| `/effort` | Set reasoning depth for the session |
 | `/diff` | View uncommitted changes |
 | `/code-review` | Review your diff |
-| `/rewind` | Roll back to a checkpoint |
+| `/rewind` | Roll back, or summarize part of the conversation |
 
 ## Key shortcuts
 
@@ -50,12 +53,13 @@ claude doctor       # diagnose setup problems
 - Be specific: name files, constraints, and example patterns.
 - `/clear` between unrelated tasks.
 - After two failed corrections, `/clear` and rewrite the prompt.
-- Keep CLAUDE.md lean. Cut any line that would not cause a mistake if removed.
+- Keep CLAUDE.md lean. Cut any line Claude could work out from the codebase itself.
+- Prefer a goal ("match the surrounding style") over a ban ("never write comments").
 - Review with a fresh session, not the one that wrote the code.
 
 ## Choosing a model
 
-Fastest and cheapest to most capable: **Haiku 4.5 → Sonnet 5 → Opus 4.8 → Fable 5.** Default to Opus for hard coding, Sonnet for everyday production, Haiku for simple high-volume tasks, Fable only when you truly need it.
+Fastest and cheapest to most capable: **Haiku 4.5 → Sonnet 5 → Opus 5 → Fable 5.** Default to Opus for hard coding, Sonnet for everyday production, Haiku for simple high-volume tasks, Fable only when you truly need it.
 
 ## The one prompt-quality test
 

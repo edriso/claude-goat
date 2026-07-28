@@ -9,7 +9,7 @@ This hub teaches people how Claude Code actually works, so wrong information is 
 - Verify every technical claim against the official docs (https://code.claude.com/docs, https://docs.claude.com) before adding or changing it. Prefer fetching the live docs over relying on memory.
 - Treat YouTube videos, blogs, and community posts as leads, not facts. Confirm them against official sources, and label community techniques as community, not official.
 - Never invent model names, command names, flags, settings keys, version numbers, or figures. If you cannot verify something, leave it out or mark it unverified.
-- The current Claude models are Fable 5, Opus 4.8, Sonnet 5, and Haiku 4.5. Do not present any other name as a current model.
+- The current Claude models are Fable 5, Opus 5, Sonnet 5, and Haiku 4.5. Do not present any other name as a current model. Opus 4.8 and earlier are legacy: still available, no longer current.
 
 ## Writing style
 

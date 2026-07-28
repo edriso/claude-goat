@@ -6,12 +6,13 @@ Built as a personal go-to reference to get genuinely productive with Claude and 
 
 ## What is inside
 
-- **Start Here** — why Claude, and how to get set up.
-- **Claude Code** — overview, slash commands, CLAUDE.md memory, hooks, subagents, MCP, keyboard shortcuts, and settings.
-- **Agent Skills** — what they are, building your first one, and how they compare to subagents, MCP, and hooks.
-- **Models & Platform** — the Claude model family, the API basics, and an MCP deep dive.
-- **Work Like a 10x Dev** — a prompting playbook, developer workflows, and common mistakes to avoid.
-- **Resources** — free Anthropic courses, a cheat sheet, and every official link in one place.
+- **Start Here**: why Claude, and how to get set up.
+- **Claude Code**: overview, slash commands, CLAUDE.md memory, hooks, subagents, MCP, keyboard shortcuts, and settings.
+- **Agent Skills**: what they are, building your first one, and how they compare to subagents, MCP, and hooks.
+- **Models & Platform**: the Claude model family, the API basics, an MCP deep dive, and code execution.
+- **Work Like a 10x Dev**: prompting, context engineering, developer workflows, spec-driven development, parallel work, token and usage discipline, browser QA, and mistakes to avoid.
+- **AI Engineering**: AI code review, evals, structured outputs, RAG, cost and caching, and prompt-injection security.
+- **Resources**: free Anthropic courses, a cheat sheet, and every official link in one place.
 
 ## Tech stack
 

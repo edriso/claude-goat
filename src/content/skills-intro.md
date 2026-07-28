@@ -16,7 +16,9 @@ Here is the elegant part. Claude does not load every Skill's full content all th
 2. When a task matches, it loads that Skill's **full instructions** (only when needed).
 3. If the Skill points to extra files or scripts, those load **only if the task requires them**.
 
-This is called progressive disclosure. It means you can have many Skills available without slowing anything down.
+This is called progressive disclosure. The numbers make the point: that always-on metadata is roughly 100 tokens per Skill, a loaded `SKILL.md` is meant to stay under about 5,000, and bundled reference files cost nothing at all until Claude opens one. So you can have a lot of Skills available without slowing anything down.
+
+It is cheap, not free. In Claude Code the whole listing of names and descriptions is budgeted at about 1% of the model's context window, and if you overflow it, descriptions start getting dropped. Run `/doctor` for an estimate of what your listing actually costs.
 
 ## Anatomy of a SKILL.md
 
@@ -67,5 +69,7 @@ Everything below the frontmatter is the actual instructions.
 In current Claude Code, custom slash commands and Skills are the same system. A Skill named `deploy` gives you a `/deploy` command you can trigger directly, in addition to Claude using it automatically when relevant.
 
 Ready to make one? Head to [Build Your First Skill](/docs/skills-build).
+
+**Official links:** [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) · [Skills in Claude Code](https://code.claude.com/docs/en/skills)
 
 **Learn more:** Anthropic's free [Introduction to Agent Skills](https://anthropic.skilljar.com/) course.

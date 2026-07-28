@@ -4,7 +4,7 @@ If your app parses Claude's prose with regexes and hopes, it will break. The API
 
 ## Structured outputs: guaranteed JSON
 
-Pass a JSON schema in `output_config.format` and the API uses constrained decoding, so the response is guaranteed to be valid JSON matching your schema. No "respond only with JSON" begging, no retry loops for malformed output. It is generally available on all current models, including Fable 5, Opus 4.8, Sonnet 5, and Haiku 4.5.
+Pass a JSON schema in `output_config.format` and the API uses constrained decoding, so the response is guaranteed to be valid JSON matching your schema. No "respond only with JSON" begging, no retry loops for malformed output. It is generally available on Claude 4.5 and later, which covers every current model: Fable 5, Opus 5, Sonnet 5, and Haiku 4.5.
 
 The TypeScript SDK pairs this with Zod: define the schema once, and `client.messages.parse()` returns a typed, validated object. Adapted from the official docs:
 
@@ -23,7 +23,7 @@ const ContactInfo = z.object({
 const client = new Anthropic();
 
 const response = await client.messages.parse({
-  model: "claude-opus-4-8",
+  model: "claude-opus-5",
   max_tokens: 1024,
   messages: [{
     role: "user",

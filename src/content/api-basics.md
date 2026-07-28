@@ -24,7 +24,7 @@ import anthropic
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from your environment
 
 response = client.messages.create(
-    model="claude-opus-4-8",
+    model="claude-opus-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "What is the capital of France?"}],
 )
@@ -62,7 +62,7 @@ tools = [{
 }]
 
 response = client.messages.create(
-    model="claude-opus-4-8", max_tokens=1024, tools=tools,
+    model="claude-opus-5", max_tokens=1024, tools=tools,
     messages=[{"role": "user", "content": "What's the weather in Paris?"}],
 )
 # If response.stop_reason == "tool_use": run your function, then send the
@@ -77,7 +77,7 @@ For anything that produces a long answer, stream the tokens as they arrive. It f
 
 ```python
 with client.messages.stream(
-    model="claude-opus-4-8",
+    model="claude-opus-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Write a haiku about the sea"}],
 ) as stream:
@@ -91,7 +91,7 @@ If you send the same big chunk repeatedly (a long system prompt, a big document,
 
 ```python
 response = client.messages.create(
-    model="claude-opus-4-8",
+    model="claude-opus-5",
     max_tokens=1024,
     system=[{
         "type": "text",

@@ -51,9 +51,11 @@ export const nav = [
     icon: '⚡',
     items: [
       { slug: 'prompting', title: 'Prompting Playbook', blurb: 'Get great results, consistently.' },
+      { slug: 'context-engineering', title: 'Context Engineering', blurb: 'The Claude 5 rules: less prompt, better judgement.' },
       { slug: 'workflows', title: 'Developer Workflows', blurb: 'Explore, plan, build, review, ship.' },
       { slug: 'spec-driven', title: 'Spec-Driven Development', blurb: 'Research, plan, implement, with artifacts you review.' },
       { slug: 'parallel', title: 'Working in Parallel', blurb: 'Worktrees, subagents, agent teams, headless.' },
+      { slug: 'token-optimization', title: 'Tokens, Limits & Usage', blurb: 'See where they go, then spend fewer.' },
       { slug: 'browser-automation', title: 'Browser Automation & QA', blurb: 'Give Claude a browser to test and review in.' },
       { slug: 'mistakes', title: 'Common Mistakes', blurb: 'Traps to avoid with AI coding.' },
     ],
