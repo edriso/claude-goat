@@ -49,6 +49,8 @@ Two things in the frontmatter matter most:
 
 Everything below the frontmatter is the actual instructions.
 
+Those two are all you need to start. There are around fifteen more fields, and they do things like take arguments, run in an isolated context, or pre-approve their own tools. See [Frontmatter & Power Features](/docs/skills-reference) when you want them.
+
 ## Where Skills come from
 
 - **Project Skills** in `.claude/skills/` are committed to your repo and shared with your team.

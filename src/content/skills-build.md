@@ -96,12 +96,8 @@ Most of Skill authoring is judgement, but a few things are hard constraints or h
 
 **Keep references one level deep.** If `SKILL.md` points at `advanced.md`, which points at `details.md`, Claude may only preview the nested file rather than read it, and act on partial information. Every reference file should link directly from `SKILL.md`. If a reference file runs past 100 lines, put a table of contents at the top so a partial read still shows the full scope.
 
-**Give one default, not a menu.** "Use pdfplumber for text extraction" beats "you could use pypdf, or pdfplumber, or PyMuPDF." Add the escape hatch as a named exception instead: "for scanned PDFs that need OCR, use pdf2image with pytesseract."
+That is genuinely all there is to it. A folder, a markdown file, a good description, clear instructions.
 
-**Build the test before the docs.** The official recommendation is to run the task *without* a Skill first, note where Claude actually fell short, then write only enough to fix that. Three concrete scenarios is the suggested minimum, and it stops you documenting problems you do not have.
-
-**Test on the models you will actually use.** Skills sit on top of the model, so the same file behaves differently across the family. Opus may not need the explanation that Haiku does.
-
-That is genuinely all there is to it. A folder, a markdown file, a good description, clear instructions. Next, see how Skills compare to the other ways of extending Claude in [Skills vs Everything](/docs/skills-vs).
+Next: the craft that separates a Skill Claude follows from one it ignores, in [Writing Skills That Work](/docs/skills-craft).
 
 **Official links:** [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) · [Skills in Claude Code](https://code.claude.com/docs/en/skills)

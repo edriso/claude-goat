@@ -33,6 +33,8 @@ export const nav = [
     items: [
       { slug: 'skills-intro', title: 'What Are Skills', blurb: 'Reusable know-how Claude applies automatically.' },
       { slug: 'skills-build', title: 'Build Your First Skill', blurb: 'A hands-on, step-by-step walkthrough.' },
+      { slug: 'skills-craft', title: 'Writing Skills That Work', blurb: 'Freedom, checklists, feedback loops, evals.' },
+      { slug: 'skills-reference', title: 'Frontmatter & Power Features', blurb: 'Every field, arguments, forked Skills, live data.' },
       { slug: 'skills-vs', title: 'Skills vs Everything', blurb: 'Skills, subagents, MCP, commands compared.' },
     ],
   },

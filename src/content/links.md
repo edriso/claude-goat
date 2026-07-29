@@ -47,6 +47,8 @@ Every official resource worth bookmarking, in one place. When something in this 
 - [Manage tool context](https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context)
 - [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 - [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+- [Agent Skills open standard (agentskills.io)](https://agentskills.io)
+- [Evaluating skill output quality](https://agentskills.io/skill-creation/evaluating-skills)
 - [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 - [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 - [Console prompting tools](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools)
