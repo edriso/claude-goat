@@ -83,6 +83,6 @@ Claude can also keep its own notes (build quirks it discovered, your preferences
 
 It can be genuinely handy, but it has a downside: it quietly accumulates notes you never see, and can occasionally resurface something stale. If you prefer to keep memory fully hand-maintained, turn it off. Run `/memory` and toggle it, set `"autoMemoryEnabled": false` in settings, or set the `CLAUDE_CODE_DISABLE_AUTO_MEMORY` environment variable.
 
-Next: make things happen automatically with [hooks](/docs/hooks).
+Next: share those instructions with other tools using [AGENTS.md](/docs/agents-md).
 
 **Official link:** [Memory](https://code.claude.com/docs/en/memory)

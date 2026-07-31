@@ -20,6 +20,7 @@ export const nav = [
       { slug: 'claude-code-overview', title: 'Overview', blurb: 'Your AI pair programmer in the terminal.' },
       { slug: 'slash-commands', title: 'Slash Commands', blurb: 'Built-in shortcuts you will use daily.' },
       { slug: 'claude-md', title: 'CLAUDE.md Memory', blurb: 'Teach Claude your project once.' },
+      { slug: 'agents-md', title: 'AGENTS.md & Other Agents', blurb: 'Share one instruction file across Claude, Codex, and Cursor.' },
       { slug: 'hooks', title: 'Hooks', blurb: 'Automate formatting, linting, and more.' },
       { slug: 'subagents', title: 'Subagents', blurb: 'Delegate work and keep context clean.' },
       { slug: 'mcp', title: 'MCP Servers', blurb: 'Connect Claude to your tools and data.' },
@@ -67,6 +68,7 @@ export const nav = [
     icon: '🔬',
     items: [
       { slug: 'ai-code-review', title: 'AI Code Review', blurb: 'Fresh-session reviews, rubrics, and verified findings.' },
+      { slug: 'cross-agent-review', title: 'Cross-Agent Review', blurb: 'A different model reviewing Claude, and what the numbers really say.' },
       { slug: 'evals', title: 'Evaluating AI Output', blurb: 'Evals and regression suites instead of vibes.' },
       { slug: 'structured-outputs', title: 'Structured Outputs & Tool Calling', blurb: 'Get JSON you can parse, reliably.' },
       { slug: 'rag-embeddings', title: 'RAG & Embeddings', blurb: 'Answer from your own data, in plain words.' },

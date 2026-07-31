@@ -52,6 +52,6 @@ Treat every AI finding the way you would treat a static analyzer warning: a lead
 
 AI review is strongest on mechanical correctness: logic errors, missed edge cases, known vulnerability patterns. Keep a human in the loop for the things a diff cannot show. Whether this is the right change to make at all, whether the design will age well, whether the tradeoffs match your product's priorities, and final sign-off on anything security-critical or irreversible. The practical split: let Claude do the first pass and catch the mechanical issues, so human review time goes to judgment instead of typo-hunting.
 
-Next: [Evaluating AI Output](/docs/evals)
+Next: [Cross-Agent Review](/docs/cross-agent-review)
 
 **Official links:** [Commands reference](https://code.claude.com/docs/en/commands) · [Best practices](https://code.claude.com/docs/en/best-practices) · [GitHub Actions](https://code.claude.com/docs/en/github-actions)
