@@ -48,6 +48,47 @@ That last bullet is the most useful line on this page. `/compact` gets reached f
 
 **8. Ask for shorter answers.** Output tokens are the expensive ones. Telling Claude the length and shape you want is a real lever, not a nicety. See the style controls in the [Prompting Playbook](/docs/prompting).
 
+## Habits that keep a working day cheap
+
+The levers above are things you do to a session. These are things you do to your
+day, and they are what separates people who never think about limits from people
+who hit them by lunchtime.
+
+**Check the model and the effort before a long run.** Both settings persist
+across sessions, so whatever you picked for yesterday's hard problem is still on
+this morning. A whole usage window can disappear into a routine task running on
+Fable 5 at `xhigh` without anything looking wrong. `/model` and `/effort` take a
+second to read, and pinning them to your [status line](/docs/settings) means you
+never have to remember.
+
+**Recycle roughly every hour.** This is not superstition. Your prompt cache lives
+about an hour on a subscription, so a session you return to after longer
+reprocesses the whole context at full price anyway. If you are going to pay for a
+cold start, choose when it happens instead of discovering it.
+
+**Cap the session, not just the day.** A useful working ceiling is somewhere
+around 150,000 to 200,000 tokens: past that, every new turn pays for a long
+history that is mostly finished work, and answer quality usually drifts too. That
+number is a team heuristic rather than anything Anthropic publishes, so treat it
+as a prompt to check `/context`, not a law.
+
+**Have a handoff move you trust.** The two that work:
+
+- `/compact focus on the API changes` when you genuinely need continuity. It
+  costs a large request, so spend it deliberately.
+- `/clear`, then point the fresh session at evidence that is already on disk:
+  *"read the uncommitted diff and carry on with issue 592."* This is free, and it
+  is usually the better one, because the code is a more accurate summary of where
+  you got to than a summary is.
+
+**Split the work by model.** A pattern that holds up in practice: Fable to plan,
+Opus to execute the plan, Sonnet for work that is already known and scoped. One
+caveat worth knowing before you copy it: Fable earns its cost on hard thinking,
+not on reading a pile of files and summarizing them, so documentation-style jobs
+are often a better trade on Opus. That split is field experience, not official
+guidance, and [The Claude Family](/docs/models) is the page to check the
+tradeoffs against.
+
 ## Trim without losing the thread
 
 When you want to free space but keep working, you have more than `/compact`:

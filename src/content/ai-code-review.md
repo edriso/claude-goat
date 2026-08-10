@@ -48,6 +48,51 @@ Install the `gh` CLI and Claude knows how to use it: fetching PR diffs, reading 
 
 Treat every AI finding the way you would treat a static analyzer warning: a lead to verify, not a conclusion. Before acting on one, reproduce it. Ask Claude to write a failing test that demonstrates the bug, or trace the failure path yourself. A finding that cannot be turned into a failing test or a concrete failure scenario is probably noise. This filter is cheap, and it is what keeps an AI review from flooding your PR with plausible-sounding non-issues.
 
+## Do not be a meat proxy
+
+There is one failure mode that undoes everything on this page: running a review
+and pasting the output straight into the pull request without reading it.
+
+Niklas Gruhn named this in [a post on 3 August 2026](https://gruhn.me/blog/2026-08-03/)
+that [Simon Willison](https://simonwillison.net/2026/Aug/3/dont-be-a-meat-proxy/)
+picked up the same day. A **meat proxy** is a person who relays model output
+verbatim: a human delivery layer between a model and another human. The problem
+is not that AI was involved. It is that nothing was added, and the cost moved.
+Generating a page takes seconds and reading one takes minutes, so you saved five
+minutes of yours and spent fifteen of somebody else's, on text that is confident,
+long, and wrong in a couple of places you have not marked.
+
+Willison's rule is the fix, and it is worth memorizing: **read it, understand it,
+validate it, then write the response in your own words.** Writing it yourself is
+not politeness. It is the evidence that you did the first three.
+
+The research says the filtering step is most of the work. Crupi, Tufano and
+Bavota compared ChatGPT review comments against 447 real human comments across
+179 pull requests. The model reproduced only 10% of the human comments (23%
+counting partial matches) while generating **2.4 times more comments overall**.
+About 40% of the extra ones were judged meaningful, so it genuinely finds things
+people miss. The authors' conclusion is explicit: use it as an additional check,
+not as a replacement and not as a way to save review time, "since human reviewers
+would still need to perform their manual inspection".
+([paper](https://arxiv.org/abs/2602.11925))
+
+Read that ratio again. More than half of the extra findings are not worth
+sending. Somebody has to be the filter, and if it is not you it is the author.
+
+So, three rules that follow from it:
+
+1. **Never auto-post.** If you write a PR review skill, "do not post comments" is
+   a requirement of the skill, not a preference. Have it hand findings to you.
+2. **Aim the review at intent, not nitpicks.** Point it at the linked issue and
+   ask what the diff does that the issue did not ask for, or does not do that it
+   did. Style belongs in a linter, and mechanical checks belong in CI.
+3. **Send a change instead of a comment where you can.** GitHub put
+   [stacked pull requests](https://github.blog/changelog/2026-07-30-stacked-pull-requests-are-now-in-public-preview/)
+   into public preview on 30 July 2026, free on every repository
+   (`gh extension install github/gh-stack`). If Claude found a fix you believe
+   in, a two line PR stacked on top of theirs costs you a minute and the author
+   nothing, which beats holding a merge for a day over feedback.
+
 ## Where humans still matter
 
 AI review is strongest on mechanical correctness: logic errors, missed edge cases, known vulnerability patterns. Keep a human in the loop for the things a diff cannot show. Whether this is the right change to make at all, whether the design will age well, whether the tradeoffs match your product's priorities, and final sign-off on anything security-critical or irreversible. The practical split: let Claude do the first pass and catch the mechanical issues, so human review time goes to judgment instead of typo-hunting.
