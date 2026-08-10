@@ -66,6 +66,23 @@ Willison's rule is the fix, and it is worth memorizing: **read it, understand it
 validate it, then write the response in your own words.** Writing it yourself is
 not politeness. It is the evidence that you did the first three.
 
+The same post makes a second point that is easy to miss, and it is aimed at
+authors rather than reviewers:
+
+> Shipping *some* code can be done with close to zero effort now: Copy/paste the
+> ticket description into Claude Code. Don't look at the code or read what Claude
+> has written. If there's any feedback from reviewers, copy/paste that into Claude
+> Code as well. If necessary, iterate.
+>
+> That works. But who has done the implementation? **The reviewers did, using
+> Claude Code, and you as a meat proxy.**
+
+That is the harder one to catch in yourself, because it does not feel like
+relaying anything. It feels like shipping. The tell: if you cannot answer a
+question about your own diff without going back to the model, then the review is
+not a second opinion on your work, it is the work, and you have moved it onto
+somebody else.
+
 The research says the filtering step is most of the work. Crupi, Tufano and
 Bavota compared ChatGPT review comments against 447 real human comments across
 179 pull requests. The model reproduced only 10% of the human comments (23%
