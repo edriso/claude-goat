@@ -42,6 +42,21 @@ AI can suggest insecure patterns: injection risks, weak auth, secrets in the wro
 
 The first answer is a draft. Missing an easy improvement because you accepted it too soon is a quiet, common mistake. **Fix:** iterate. It is a draft. Refine it.
 
+## 11. Walking away from a session that can act without asking
+
+This is the one people learn the hard way. You are tired, the task is boring, so you flip on auto-accept and check your phone for a few minutes. You come back to committed changes you did not review and a `git reset` you did not ask for, and now you are awake.
+
+Two things make it worse than it sounds. The permission mode is only half of what decides your blast radius: the other half is your **allow list**, so if you have allowed `Bash(git:*)` to stop the prompts, then commits, resets, and checkouts are all inside what "auto" can do unattended. And a mode you cycled with `Shift+Tab` yesterday can still be on today, because `defaultMode` in settings persists.
+
+**Fix:** match the mode to whether you are actually watching.
+
+- **Watching, and reviewing each diff:** default mode is fine, and auto-accept is fine for a tight loop on code you are reading as it lands.
+- **Not watching:** stop the session, or move it to a [sandbox or worktree](/docs/parallel) where a mistake costs nothing.
+- **Thinking, not building yet:** plan mode. It cannot write anything, so it is the one mode that is safe to leave running while you do something else, and it is cheaper too.
+- **Any repo you would be sad to lose:** keep git out of the allow list and approve those calls by hand. It is a two-second cost on the rare call that matters.
+
+The deeper version of the fix is not a setting at all. If you want a step to happen every time regardless of what Claude decides, a [hook](/docs/hooks) enforces it and an instruction does not. And if you want a key that cannot be used while you are away from your desk, that is a hardware-backed SSH key, which is outside this guide but worth looking up.
+
 ## The meta-lesson
 
 Use Claude as a collaborative partner, not an autopilot. Stay engaged, always keep a check it can run against, and manage your context deliberately. Do that and you get all the speed without the sloppiness.

@@ -37,6 +37,19 @@ You do not need a framework. The primitives are built in:
 - **Handoff docs:** when a long session has to pause, ask for "a handoff doc for a fresh session: what we are doing, decisions made, what is next." Then `/clear` and start the new session by reading it. You control exactly what survives, instead of trusting a compaction summary.
 - **Skills:** once a phase works well for your repo, codify it as a [skill](/docs/skills-intro) or slash command, like a `/research` that knows where your docs and entry points live. Tune it on a few tickets, then share it with your team.
 
+## The side effect nobody plans for: the files are portable
+
+Write the spec and the plan to disk and you get a benefit that has nothing to do with structure. **A plan file is not tied to the session that made it, or even to the tool.**
+
+The practical version: you run out of usage mid-task. Instead of stopping, open Codex (or any other agent) in the same repo, point it at `plan.md`, and it picks up where the plan left off. The plan already says what is done, what is next, and which decisions are settled, which is exactly the context a fresh tool is missing. A conversation cannot move between tools. A file can.
+
+Two things make this work in practice:
+
+- **Write progress into the plan, not just intentions.** Ticking off phases as they land is what makes the file readable by something with no memory of the work. This is the same reason it survives a `/clear`.
+- **Make sure the other tool can read your project rules too**, or it will helpfully violate all of them. That is what [AGENTS.md](/docs/agents-md) is for.
+
+Worth being clear about the tradeoff: writing artifacts costs tokens up front, and for a small change that is a bad deal. What you are buying is the ability to stop and resume at all, anywhere, which is why it pays off exactly on the long tasks where running out is likely.
+
 ## Off-the-shelf toolkits
 
 Three open-source options if you want structure without building it yourself:

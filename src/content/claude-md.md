@@ -60,6 +60,75 @@ Anthropic's own trim rule is sharper than that and worth stealing. **Cut what Cl
 
 You do not have to do this by hand. Run **`/doctor`** and it proposes exactly these trims, deduplicates a local `CLAUDE.md` against the checked-in one, and offers to migrate the always-loaded guidance that survives into Skills and nested `CLAUDE.md` files. It reports first and asks before changing anything. There is more on the thinking behind it in [Context Engineering](/docs/context-engineering).
 
+## Scope rules to the files they apply to
+
+The advice above ("keep it lean") sounds like it forces a choice between context you want and context you can afford. It mostly does not, because you can make instructions load only when they are relevant. This is the most underused part of the memory system.
+
+Three mechanisms, from simplest to most precise:
+
+**1. A `CLAUDE.md` in a subfolder.** Claude discovers `CLAUDE.md` files below your working directory but does not load them at launch. Per the docs, they "are included when Claude reads files in those subdirectories". So `./css/CLAUDE.md` costs you nothing until a tool call touches something under `css/`. Free CSS rules, only for CSS work.
+
+**2. `.claude/rules/`, one topic per file.** For larger projects, split instructions into topic files instead of growing one document:
+
+```text
+your-project/
+├── .claude/
+│   ├── CLAUDE.md         # main project instructions
+│   └── rules/
+│       ├── code-style.md
+│       ├── testing.md
+│       └── security.md
+```
+
+All `.md` files are discovered recursively, so you can nest them in `frontend/` and `backend/` folders. A rule with no `paths` field loads at launch with the same priority as `.claude/CLAUDE.md`. This is organization rather than savings, and that alone is worth it on a team, because a teammate editing the testing rules does not have to touch a file everyone else also edits.
+
+**3. Path-scoped rules, which is the powerful one.** Add a `paths` field in YAML frontmatter and the rule only enters context when Claude reads a matching file:
+
+```markdown
+---
+paths:
+  - "src/api/**/*.ts"
+---
+
+# API rules
+
+- Every endpoint validates its input.
+- Use the standard error response shape.
+```
+
+Glob patterns work how you would expect, including brace expansion:
+
+| Pattern | Matches |
+|---|---|
+| `**/*.ts` | Every TypeScript file, any directory |
+| `src/**/*` | Everything under `src/` |
+| `*.md` | Markdown in the project root only |
+| `src/**/*.{ts,tsx}` | Both extensions in one pattern |
+
+This is what lets a rule follow a *concern* rather than a folder. If your blog is a lift-and-shift of a third-party theme with its own hard-won conventions, one rule scoped to `app/blog/**`, `lib/webflow/**`, and `scripts/webflow-*` carries all of them, spanning folders that have nothing else in common, and costs nothing on every other task.
+
+Two more things worth knowing:
+
+- **Personal rules live in `~/.claude/rules/`** and apply to every project on your machine. They load before project rules, so project rules win.
+- **The directory supports symlinks**, so you can keep one shared rule set and link it into many repos: `ln -s ~/company-standards/security.md .claude/rules/security.md`.
+
+**The gotcha to remember:** your project-root `CLAUDE.md` is re-read from disk after `/compact`, but **nested `CLAUDE.md` files and path-scoped rules are not re-injected**. They come back the next time Claude reads a matching file. So if a rule seems to evaporate mid-session, that is usually why, and touching a relevant file brings it back.
+
+## Personal instructions, and the worktree trap
+
+`CLAUDE.local.md` at the project root holds preferences you do not want to commit: your sandbox URLs, your test data, your own workflow notes. Gitignore it. A neat trick is to put `*.local.*` in your **global** gitignore, so the file is ignored in every repo without you editing each `.gitignore`.
+
+One catch that bites people who use git worktrees: a gitignored file only exists in the worktree where you created it, so your personal instructions vanish in the next one. The documented fix is to keep the real file in your home directory and import it instead:
+
+```markdown
+# Individual Preferences
+- @~/.claude/my-project-instructions.md
+```
+
+Expect an approval dialog the first time a *project* file imports something from outside the working directory. That prompt exists to protect you from an import somebody else committed, so read it rather than clicking through it. Imports in your own user-scope files do not trigger it.
+
+And if you work in a monorepo where other teams' instruction files keep getting picked up, `claudeMdExcludes` in `.claude/settings.local.json` skips them by glob. Managed policy files are the one thing it cannot exclude.
+
 ## Why it is guidance, not law
 
 Worth knowing so you are not surprised: `CLAUDE.md` is delivered as a user message *after* the system prompt, not as part of it. The docs are candid that Claude reads it and tries to follow it, but there is no guarantee of strict compliance, especially for vague or conflicting instructions.
