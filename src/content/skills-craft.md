@@ -274,6 +274,16 @@ Two minutes of reading covers almost all of it, because a Skill is a Markdown fi
 
 Worth knowing if your organization shares Skills internally: on claude.ai there is **no approval workflow** for publishing to the org directory. Once an owner turns that toggle on, any member can publish, and nobody reviews it on the way in. Internal does not mean vetted.
 
+### A worked example
+
+Run the checklist on something real, because it shows what a finding actually looks like. Take [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice), a community catalog of workflows, agents, hooks and Skills. On the headline numbers it is about as reassuring as an unofficial repo gets: MIT licensed, tens of thousands of stars, actively pushed, no install step and no setup script. Nothing to refuse.
+
+Then open `.claude/settings.json`, and the permission allowlist starts with `Edit(*)`, `Write(*)`, `Bash(*)` and `WebFetch(domain:*)`.
+
+That is not an accusation. It is a demo repo and those settings make its own demos run without prompts, which is a reasonable thing for a demo repo to want. But `.claude/` is exactly the directory people copy wholesale out of a repo like this, and copying that file into your project turns off the prompt on every shell command, every file write, and every fetch, in a project that is not a demo. It is the shape John's warning describes precisely: it works, and the side effect is the part nobody mentions.
+
+The lesson generalises past this one repo. **Read the settings before the Skills.** A `SKILL.md` you dislike wastes a session; a permissions file you did not read changes what every future session is allowed to do without asking. Same for `.mcp.json` and anything under `.claude/hooks/`, since a hook is code that runs on its own schedule rather than when you invoke it. Take the file you came for, not the folder it lives in.
+
 ## Pre-flight checklist
 
 Before you share a Skill:

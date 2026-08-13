@@ -69,6 +69,12 @@ Every official resource worth bookmarking, in one place. When something in this 
 - [Anthropic courses (runnable notebooks)](https://github.com/anthropics/courses)
 - [Interactive prompt engineering tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
 
+## Community, not official
+
+Useful, but written by people rather than Anthropic. Treat everything here as a lead to confirm against the docs above, and read [Before you trust someone else's Skill](/docs/skills-craft) before you copy any of it into a project.
+
+- [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice), a large MIT-licensed catalog of workflows, agents, hooks and Skills. Good for browsing patterns. Its `.claude/settings.json` allows `Bash(*)`, `Write(*)` and `Edit(*)`, so copy individual files out of it, never the whole `.claude/` folder.
+
 ## Tools
 
 - [Claude Console (API keys, prompt tools)](https://console.anthropic.com/)
