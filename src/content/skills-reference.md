@@ -251,6 +251,49 @@ One trap if you use cloud sessions or routines: they do not read `~/.claude/skil
 
 For a team that already shares a repo, `.claude/skills/` is usually the better answer anyway. It is versioned, it travels with the project, and it works in cloud sessions.
 
+## Ship it as a plugin when more than one repo needs it
+
+`.claude/skills/` has one ceiling: the Skill only exists where that repo is checked out. The moment a teammate wants your Skill in a *different* project, you are emailing a file around, and every copy drifts. A **plugin** is the supported answer, and the docs draw the line clearly:
+
+| Approach | Best for |
+|---|---|
+| Standalone `.claude/` | Personal workflows, project-specific customizations, quick experiments |
+| Plugin | Sharing with teammates, distributing to community, versioned releases, reusable across projects |
+
+The official advice is to start standalone and convert when you are ready to share, which is the right order. Iterating on a Skill is much faster before it has a manifest and a version number.
+
+**The structure**, and one mistake almost everybody makes first:
+
+```text
+our-tools/
+├── .claude-plugin/
+│   └── plugin.json      # ONLY this file goes in here
+├── skills/
+│   └── mad-boring/
+│       └── SKILL.md
+├── agents/
+└── hooks/
+    └── hooks.json
+```
+
+`skills/`, `agents/`, `commands/` and `hooks/` sit at the **plugin root**, next to `.claude-plugin/`, never inside it. The manifest itself is small: `name`, `description`, and an optional `version` that controls when people receive updates.
+
+**Converting an existing setup** is mostly copying. Move `.claude/skills/`, `.claude/agents/` and `.claude/commands/` to the plugin root, then move the `hooks` object out of `settings.json` into `hooks/hooks.json` (same format, new home). Delete the originals afterwards, because project `.claude/agents/` definitions override same-named plugin agents and you will spend an hour wondering why your edits do nothing.
+
+**Test before anyone installs anything:**
+
+```bash
+claude --plugin-dir ./our-tools    # load it for this session only
+/reload-plugins                    # pick up edits without restarting
+claude plugin validate ./our-tools # the same check the review pipeline runs
+```
+
+**Distribution is a marketplace**, which is just a repo others add. The part teams miss: **a marketplace can be a private repository**, so an internal plugin never has to be public to be shared. If you only want it on your own machine, `claude plugin init my-tool` scaffolds a plugin inside `~/.claude/skills/` that auto-loads with no marketplace at all.
+
+**Expect the namespace.** Plugin Skills are always prefixed, so `mad-boring` shipped in a plugin named `our-tools` is `/our-tools:mad-boring`. That is what makes them collision-proof, and it is why the `name` field matters in a plugin when it does not elsewhere.
+
+One caution that belongs here rather than in a footnote: installing a plugin is installing someone's hooks, MCP servers and default settings, not just their Skills. Everything in [Before you trust someone else's Skill](/docs/skills-craft) applies with more force, because the surface is bigger.
+
 ## What actually stays in your context
 
 Invoking a Skill drops its rendered content into the conversation as one message, and it stays there for the rest of the session. Claude Code does not re-read the file on later turns. That has a direct writing consequence: **write standing instructions, not one-time steps.** Guidance meant to apply across a whole task should read like a rule, not like step 3.

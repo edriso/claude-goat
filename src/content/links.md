@@ -74,6 +74,7 @@ Every official resource worth bookmarking, in one place. When something in this 
 Useful, but written by people rather than Anthropic. Treat everything here as a lead to confirm against the docs above, and read [Before you trust someone else's Skill](/docs/skills-craft) before you copy any of it into a project.
 
 - [claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice), a large MIT-licensed catalog of workflows, agents, hooks and Skills. Good for browsing patterns. Its `.claude/settings.json` allows `Bash(*)`, `Write(*)` and `Edit(*)`, so copy individual files out of it, never the whole `.claude/` folder.
+- [Modern Web Guidance](https://github.com/googlechrome/modern-web-guidance), a Skill collection from the Chrome and Edge teams that steers coding agents toward current platform features instead of the legacy patterns they reach for by default. Not Anthropic, but not really community either: it is browser-vendor material, and it ships browser-support data and fallbacks alongside each recommendation. The most useful thing on this list if you write for the web.
 
 ## Tools
 
