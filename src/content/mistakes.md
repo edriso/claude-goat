@@ -57,6 +57,19 @@ Two things make it worse than it sounds. The permission mode is only half of wha
 
 The deeper version of the fix is not a setting at all. If you want a step to happen every time regardless of what Claude decides, a [hook](/docs/hooks) enforces it and an instruction does not. And if you want a key that cannot be used while you are away from your desk, that is a hardware-backed SSH key, which is outside this guide but worth looking up.
 
+## 12. Shipping the scaffolding
+
+The model narrates itself while it works, and the narration lands in your diff. Comments that restate the line under them. Comments pointing at a Figma frame, a ticket, or a pull request that merged six weeks ago. Guards that guard a guard, like `if (x.items && x.items.length && x.items.length > 0)` where `if (x.items?.length)` says the same thing.
+
+Each one looks harmless on its own, which is exactly why they survive review. They are not harmless. A comment pointing somewhere else is a promise the code cannot keep, and it costs the next reader a click to learn nothing. A redundant check is a claim about your data, and a false one: it tells the reader that `items` might be a non-array with a length, so they go and check, and it never was.
+
+There is a measurement behind the feeling. GitClear tracked 623 million code changes across 2023 to 2026 and found duplicated blocks up 81%, error-masking constructs up 47%, and refactoring line-moves down 70% against the 2022 baseline ([report](https://www.gitclear.com/the_ai_code_quality_maintainability_gap)). The individual figures will move. The direction is the point: generated code is additive. It writes the new thing and rarely deletes the old one, and nothing else in your pipeline deletes it either unless a person decides to.
+
+**Fix:** two halves, and the second one matters more.
+
+- **Aim at an outcome in CLAUDE.md, not a ban.** "Never write comments" competes with everything else in the context and loses at the worst moment. "Match the comment density and idiom of the surrounding code" gives the model a target it can actually hit. This is the same lesson Anthropic learned in their own system prompt, described in [Context Engineering](/docs/context-engineering).
+- **Clean up before the pull request, not during review.** A cleanup that only ever happens at review time is a cleanup you chose to run at the most expensive moment. `/code-review --fix` applies findings to your working tree, and its quality-only sibling `/simplify` handles reuse and simplification without hunting for bugs. Run either before you push, and your reviewer gets to spend their attention on the change instead of the packaging.
+
 ## The meta-lesson
 
 Use Claude as a collaborative partner, not an autopilot. Stay engaged, always keep a check it can run against, and manage your context deliberately. Do that and you get all the speed without the sloppiness.

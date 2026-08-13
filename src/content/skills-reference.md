@@ -247,6 +247,10 @@ Project Skills load from `.claude/skills/` in your starting directory and every 
 
 One trap if you use cloud sessions or routines: they do not read `~/.claude/skills/` from your machine. A personal-only Skill will report as not found. Commit it to the repo, ship it in a plugin declared in `.claude/settings.json`, or enable it for your claude.ai account.
 
+**Sharing a Skill on claude.ai is a different system, and it is off by default.** This catches teams out: one person builds a Skill under Settings → Capabilities → Skills, tells everyone it is shared, and nobody else can find a *Shared* tab. Nothing is broken. On Team and Enterprise plans an organization owner has to turn sharing on first, under **Organization settings → Skills**, and there are two independent toggles: **Skill sharing** lets members share with named colleagues, and **Share with organization** lets them publish to the org directory. Both start off, and the *Share* button does not appear until one of them is on. Shared Skills arrive view-only, so recipients can enable and use them but not edit them. Note there is no approval step on org-wide publishing: once the toggle is on, any member can publish without review. Details in [Anthropic's help centre](https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization).
+
+For a team that already shares a repo, `.claude/skills/` is usually the better answer anyway. It is versioned, it travels with the project, and it works in cloud sessions.
+
 ## What actually stays in your context
 
 Invoking a Skill drops its rendered content into the conversation as one message, and it stays there for the rest of the session. Claude Code does not re-read the file on later turns. That has a direct writing consequence: **write standing instructions, not one-time steps.** Guidance meant to apply across a whole task should read like a rule, not like step 3.

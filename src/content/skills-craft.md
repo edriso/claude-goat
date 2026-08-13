@@ -261,6 +261,19 @@ REQUEST_TIMEOUT = 30
 
 **Be explicit about dependencies,** because the sandbox differs by surface. In Claude Code, Skills have the same network access as any other program on your machine (install locally, never globally). On claude.ai, network access depends on your settings. On the Claude API there is no network access and no runtime package installation at all, so only pre-installed packages work. Never write "use the pdf library"; write `pip install pypdf` and then the code.
 
+## Before you trust someone else's Skill
+
+Skills spread the way snippets do: a Gist, a repo, a directory listing, a colleague saying "this one is great". Most are fine. The failure mode people describe is rarely bad advice, it is a Skill that works and quietly does something else on the side.
+
+Two minutes of reading covers almost all of it, because a Skill is a Markdown file and you can just open it.
+
+- **Read the body, not the description.** The description is marketing. The body is what runs.
+- **Look for anything that reaches outside the file.** Bundled scripts, `curl` or `pip install` or `npm install` steps, an MCP server it expects, a URL it fetches at runtime. Those are dependencies wearing a different hat, and they deserve the scrutiny you would give any dependency.
+- **Check `allowed-tools`.** A Skill that declares them gets those tools without a per-use prompt for the turn that invokes it. Anthropic's own docs put it plainly: review project Skills before trusting a repository, "since a skill can grant itself broad tool access".
+- **Run it on a branch first and read the diff.** The cheapest possible eval. If it edits more than you expected, you found out for free.
+
+Worth knowing if your organization shares Skills internally: on claude.ai there is **no approval workflow** for publishing to the org directory. Once an owner turns that toggle on, any member can publish, and nobody reviews it on the way in. Internal does not mean vetted.
+
 ## Pre-flight checklist
 
 Before you share a Skill:
