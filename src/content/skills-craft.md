@@ -284,6 +284,24 @@ That is not an accusation. It is a demo repo and those settings make its own dem
 
 The lesson generalises past this one repo. **Read the settings before the Skills.** A `SKILL.md` you dislike wastes a session; a permissions file you did not read changes what every future session is allowed to do without asking. Same for `.mcp.json` and anything under `.claude/hooks/`, since a hook is code that runs on its own schedule rather than when you invoke it. Take the file you came for, not the folder it lives in.
 
+The same check is worth running on Skills written in-house, where it tends to find something subtler. Two patterns come up often enough to look for by name.
+
+**`allowed-tools` is the contract, and the prose is not.** A Skill can say plainly in its body that it never posts anything, never deploys, and only ever reads, and still declare `Bash(gh api:*)` in its frontmatter. Both are true at once, and only one of them is enforced: `gh api -X POST` and `gh api -X DELETE` are inside that grant. The instructions will be followed almost every time, which is exactly why the permission exists, because it defines what happens when they are not. Grant the calls the Skill actually makes, or drop the broad one and accept a prompt on the rare occasion it fires.
+
+**A command in the context block runs on somebody else's machine.** Skills that pre-fetch with `!` are running that shell line wherever the Skill ends up, and the classic break is a BSD-only flag on a Linux box:
+
+```bash
+$ date -v-7d +%Y-%m-%d
+date: invalid option -- 'v'
+
+$ gh pr list --state merged --search "merged:>" --json number
+[]                                   # exit code 0
+```
+
+The date substitution failed, the search string collapsed to nothing useful, and the query still **succeeded** with an empty result. A `|| echo "not configured"` fallback never fires, because nothing returned an error. The Skill does not warn you; it produces a confident report saying that nothing shipped. Prefer portable commands (`date -d '7 days ago' +%F` on GNU, or try both), and where a Skill summarises data for other people, make an empty result look different from a broken one.
+
+Both are on the checklist below, and both are worth a second pair of eyes, because neither one shows up when the Skill is run by its author on the machine it was written on.
+
 ## Pre-flight checklist
 
 Before you share a Skill:
@@ -296,6 +314,8 @@ Before you share a Skill:
 - [ ] References are one level deep from `SKILL.md`
 - [ ] Workflows have clear steps, and fragile ones have a validation loop
 - [ ] Scripts handle their own errors, and every constant is justified
+- [ ] `allowed-tools` grants only the calls the Skill actually makes, matching what the body promises
+- [ ] Context-block commands are portable, and a broken one looks different from an empty result
 - [ ] Required packages are listed and confirmed available
 - [ ] Forward slashes everywhere
 - [ ] At least three evaluations, run in fresh sessions against a no-Skill baseline
