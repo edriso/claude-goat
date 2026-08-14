@@ -29,6 +29,7 @@ These are the ones worth knowing by heart. You do not need to memorize all of th
 | `/hooks` | View your [hook](/docs/hooks) configuration |
 | `/config` | Open settings, or set directly: `/config theme=dark` |
 | `/statusline` | Configure the status bar in plain language |
+| `/tui [fullscreen\|default]` | Switch renderer, or print which one is active. See [shortcuts](/docs/shortcuts) |
 
 ## Reviewing and shipping
 
