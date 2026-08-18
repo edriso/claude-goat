@@ -36,7 +36,7 @@ That last bullet is the most useful line on this page. `/compact` gets reached f
 
 - `CLAUDE.md`, which the docs suggest keeping under about 200 lines. Workflow instructions that only matter sometimes belong in a Skill, which loads on demand.
 - Your Skill listing. Only each Skill's name and description are preloaded, roughly 100 tokens each, and the whole listing is budgeted at about 1% of the model's context window. Cheap, but not free, and it fills up.
-- MCP servers. Tool definitions are deferred by default, so only names enter context until Claude actually uses a tool. Run `/mcp` to disable servers you are not using.
+- MCP servers. Tool definitions are deferred by default, so only tool names and each server's instructions enter context until Claude actually uses a tool. Instructions are the part people forget: a server that ships a long one costs you every session even if you never call it. Run `/mcp` and toggle off what this project does not need. The choice is remembered per project, so you can install a server once at user scope and only pay for it where it earns its place. See [MCP Servers](/docs/mcp).
 
 **4. Prefer a CLI over an MCP server.** This one surprises people. Official guidance: tools like `gh`, `aws`, `gcloud`, and `sentry-cli` are *more* context-efficient than the equivalent MCP server, because a CLI adds no per-tool listing at all. Claude can just run it.
 
