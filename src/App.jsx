@@ -8,6 +8,11 @@ import NotFound from './pages/NotFound'
 import { useLocalStorage } from './hooks/useLocalStorage'
 
 export default function App() {
+  const location = useLocation()
+  return <AppContent key={location.pathname} />
+}
+
+function AppContent() {
   // Desktop: collapse state is remembered across refreshes.
   const [collapsed, setCollapsed] = useLocalStorage('cg-sidebar-collapsed', false)
   // Mobile: the drawer is ephemeral and starts closed.
@@ -22,9 +27,8 @@ export default function App() {
     else setMobileOpen((o) => !o)
   }
 
-  // Close the mobile drawer and scroll to top whenever the route changes.
+  // Each route gets a fresh mobile drawer; keep scroll position in sync.
   useEffect(() => {
-    setMobileOpen(false)
     window.scrollTo({ top: 0 })
   }, [location.pathname])
 
