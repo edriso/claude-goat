@@ -66,9 +66,31 @@ Do not mix up the two similar-sounding names: `ultrathink` is a one-turn keyword
 ## A few practical facts
 
 - **Model IDs are fixed snapshots.** `claude-opus-5` points to one specific release, not an evergreen "latest." From the 4.6 generation onward the IDs simply stopped carrying a date, and they are still pinned. Older models kept the date, which is why Haiku 4.5 is `claude-haiku-4-5-20251001`; `claude-haiku-4-5` is a convenience alias that resolves to it. Use the exact string, because a typo returns an error.
-- **In Claude Code** you switch models with `/model` and can set a default in [settings](/docs/settings).
+- **In Claude Code** you switch models mid-session with `/model` and can set a default in [settings](/docs/settings).
 - **Availability.** All four are on the Claude API, plus Amazon Bedrock, Claude Platform on AWS, Google Cloud, and Microsoft Foundry (cloud providers sometimes prefix the IDs).
+
+## Pick the model as you open the tab
+
+`/model` changes the model you are already talking to. The other way in is `--model`, which sets it as the session starts:
+
+```bash
+claude --model opus
+```
+
+It takes the same short aliases (`fable`, `opus`, `sonnet`, `haiku`) or a full model ID, and it overrides both the `model` setting and the `ANTHROPIC_MODEL` environment variable.
+
+That matters more than it sounds, because the model is a per-task choice and tasks usually get their own terminal tab. A handful of shell aliases turns "which model do I want for this" into one word:
+
+```bash
+# ~/.zshrc or ~/.bashrc
+alias fable='claude --model fable'
+alias opus='claude --model opus'
+alias sonnet='claude --model sonnet'
+alias haiku='claude --model haiku'
+```
+
+Now scoped work reads the way you think about it: `sonnet` in a fresh tab to turn a dirty tree into a PR, `opus` in another for the architecture problem you actually care about. It is a small thing, but it removes a real decision point, and it pairs naturally with picking an effort level for the same reason: match the setting to the task, once, at the point you open the tab.
 
 Next: build your own apps on top of these models with the [Claude API basics](/docs/api-basics).
 
-**Official links:** [Models overview](https://platform.claude.com/docs/en/about-claude/models/overview) · [Effort](https://platform.claude.com/docs/en/build-with-claude/effort) · [Model configuration in Claude Code](https://code.claude.com/docs/en/model-config)
+**Official links:** [Models overview](https://platform.claude.com/docs/en/about-claude/models/overview) · [Effort](https://platform.claude.com/docs/en/build-with-claude/effort) · [Model configuration in Claude Code](https://code.claude.com/docs/en/model-config) · [CLI reference](https://code.claude.com/docs/en/cli-reference)

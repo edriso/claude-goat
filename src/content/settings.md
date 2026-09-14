@@ -21,7 +21,7 @@ A useful starter, with a schema line that gives you editor autocomplete:
   "permissions": {
     "defaultMode": "acceptEdits",
     "allow": ["Bash(npm run lint)", "Bash(npm run test:*)"],
-    "deny": ["Read(./.env)", "Read(./secrets/**)"]
+    "deny": ["Read(.env)", "Read(secrets/**)"]
   }
 }
 ```
@@ -76,9 +76,17 @@ The good news is you do not need it. You can get almost all of the speed, safely
       "Bash(git diff:*)"
     ],
     "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(.env.keys)",
+      "Read(secrets/**)",
+      "Read(*.pem)",
+      "Read(*.p12)",
+      "Read(*.pfx)",
+      "Read(id_*)",
+      "Read(.netrc)",
+      "Read(.pgpass)",
+      "Read(.htpasswd)",
       "Bash(curl:*)",
       "Bash(wget:*)"
     ]
@@ -88,7 +96,30 @@ The good news is you do not need it. You can get almost all of the speed, safely
 
 That setup keeps you moving fast on the boring stuff while a real guardrail stays up around anything that could leak a key or do damage. It is the difference between skipping the seatbelt and just tuning it so it stops nagging you on the safe roads.
 
-Want an OS-level safety net on top of that? Run `/sandbox` to isolate what shell commands can read from disk and reach on the network, independent of your permission rules.
+Two details in that deny list are worth knowing, because most people get them wrong.
+
+**Bare filenames already match at any depth.** Read and Edit rules use [gitignore](https://git-scm.com/docs/gitignore) pattern syntax, so `Read(.env)` and `Read(**/.env)` are exactly equivalent: both cover every `.env` at or under your current directory, not just the one in the project root. You do not need the `**/` prefix. What a bare pattern does *not* reach is a `.env` in a parent directory or another project; for that, `Read(//**/.env)` is anchored at the filesystem root and matches everywhere.
+
+**The anchors are easy to trip over.** A single leading slash is not an absolute path. `Read(/secrets/**)` anchors at whatever defined it, so in `~/.claude/settings.json` it means `~/.claude/secrets/`, not your project. Use `//` for a real absolute path and `~/` for a home-relative one.
+
+| Pattern | Anchored at |
+|---|---|
+| `path` or `./path` | Current directory |
+| `/path` | The settings source (project root, or `~/.claude/` in user settings) |
+| `~/path` | Your home directory |
+| `//path` | The filesystem root |
+
+## Deny rules do not stop every read
+
+This one matters, because the list above looks more airtight than it is.
+
+A `Read` deny rule covers Claude's built-in file tools, the file commands Claude Code recognizes inside Bash (`cat`, `head`, `tail`, `sed`), and the targets of shell redirections like `> file` and `< file`. That is a lot, and for everyday use it works.
+
+What it does not cover is **a command that reads a file without naming it**. Run `grep -r pattern .` from the directory holding your `.env` and the rule never matches, because no denied path appears in the command. The same goes for any subprocess that opens files on its own: a Python or Node script does its file access inside the process, where the permission layer cannot see it.
+
+So treat deny rules as a guardrail against the obvious mistake, not as a boundary that holds against a determined prompt injection. When you need the real thing, `/sandbox` enforces it at the OS level, where every process is bound regardless of how it names the file. The two compose: use permission rules for intent, the sandbox for enforcement.
+
+While you are here, one related surprise: Claude Code treats a built-in set of Bash commands as read-only and runs them with no prompt in every mode, including `ls`, `cat`, `head`, `tail`, `grep`, `find`, `wc`, `diff`, `stat`, and read-only `git`. That set is not configurable. If you are getting prompted for something on that list, a deny or ask rule is what put it there, which is usually a managed or team settings file rather than anything you wrote.
 
 ## The status line
 
@@ -125,4 +156,4 @@ Small touches like this make the tool feel like yours, and knowing your context 
 
 Next: learn what makes Claude tick with [Agent Skills](/docs/skills-intro).
 
-**Official links:** [Settings](https://code.claude.com/docs/en/settings) · [Permission modes](https://code.claude.com/docs/en/permission-modes) · [Security](https://code.claude.com/docs/en/security) · [Statusline](https://code.claude.com/docs/en/statusline)
+**Official links:** [Settings](https://code.claude.com/docs/en/settings) · [Configure permissions](https://code.claude.com/docs/en/permissions) · [Permission modes](https://code.claude.com/docs/en/permission-modes) · [Sandboxing](https://code.claude.com/docs/en/sandboxing) · [Security](https://code.claude.com/docs/en/security) · [Statusline](https://code.claude.com/docs/en/statusline)
