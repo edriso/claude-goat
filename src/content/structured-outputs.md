@@ -82,6 +82,6 @@ Guaranteed syntax is not guaranteed sense. Keep a thin validation layer:
 
 Use structured outputs when you want data out of the model: extraction, classification, anything feeding a database or UI. Use tool calling when the model should decide what to do next with functions you provide: look something up, take an action, then reason about the result. Parse prose only when a human is the consumer. If code will read the output, ask for structure. It removes the flakiest part of most LLM apps, which was never the model, but the parsing.
 
-Next: [RAG & Embeddings](/docs/rag-embeddings)
+Next: [Classify, Don't Generate](/docs/classify-dont-generate)
 
 **Official links:** [Structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) · [Tool use overview](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview) · [Strict tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use)
