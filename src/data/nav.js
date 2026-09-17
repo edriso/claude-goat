@@ -71,6 +71,7 @@ export const nav = [
       { slug: 'cross-agent-review', title: 'Cross-Agent Review', blurb: 'A different model reviewing Claude, and what the numbers really say.' },
       { slug: 'evals', title: 'Evaluating AI Output', blurb: 'Evals and regression suites instead of vibes.' },
       { slug: 'structured-outputs', title: 'Structured Outputs & Tool Calling', blurb: 'Get JSON you can parse, reliably.' },
+      { slug: 'classify-dont-generate', title: "Classify, Don't Generate", blurb: 'When the answer is one of N, a generator is the expensive way to get it.' },
       { slug: 'rag-embeddings', title: 'RAG & Embeddings', blurb: 'Answer from your own data, in plain words.' },
       { slug: 'cost-caching', title: 'Cost, Latency & Caching', blurb: 'Context discipline is money.' },
       { slug: 'ai-security', title: 'Prompt Injection & AI Security', blurb: 'Untrusted content is data, not instructions.' },

@@ -96,15 +96,26 @@ The upgrade on that habit: decide what "good" means before you start tuning. The
 
 If you are correcting the same thing about tone or format every turn, the prompt is the wrong place for it. Claude Code has **output styles**, which edit the system prompt itself and add per-turn reminders to hold the line.
 
-Pick one with `/config`, under **Output style**. Three built-ins ship alongside Default: **Proactive** (act, do not pause for routine decisions), **Explanatory** (adds teaching notes as it works), and **Learning** (leaves you `TODO(human)` markers to fill in). You can also set the field directly:
+Pick one with `/config`, under **Output style**. Four built-ins ship alongside Default:
+
+| Style | What it does |
+| --- | --- |
+| **Proactive** | Executes immediately and makes reasonable assumptions instead of pausing for routine decisions. Stronger than auto mode, and it does not change what runs without asking you. |
+| **Concise** | Leads with the result, skips preamble and narration, keeps responses short by default. Asks for an explanation and you still get one in full. Needs v2.1.237 or later. |
+| **Explanatory** | Adds teaching "Insights" while it works. |
+| **Learning** | Leaves you `TODO(human)` markers to implement yourself. |
+
+**Concise** is the one most people are actually looking for. The complaint "I asked it to change some padding and got two paragraphs back" has a one-line official fix, and most people re-prompt for a year instead of finding it. Worth knowing what it does not do: the docs are explicit that it keeps the engineering work as thorough as Default, and that error reports, security warnings and destructive-action confirmations keep their full text. It shortens the narration, not the work.
+
+You can also set the field directly:
 
 ```json
 {
-  "outputStyle": "Explanatory"
+  "outputStyle": "Concise"
 }
 ```
 
-A custom style is a markdown file in `~/.claude/output-styles/` or `.claude/output-styles/`:
+A custom style is a markdown file in `~/.claude/output-styles/` (user), `.claude/output-styles/` (project), or the managed settings directory:
 
 ```markdown
 ---
@@ -117,9 +128,31 @@ Report findings as a flat list. One sentence per finding, then the file and line
 State uncertainty plainly ("I am not sure this is the cause") rather than padding.
 ```
 
-Two things to know. `keep-coding-instructions: true` matters: without it, a custom style *replaces* Claude Code's built-in software engineering instructions, which is right for a writing assistant and wrong for a code reviewer. And the style is read once at session start, so a change needs `/clear` or a new session.
+Three things to know.
+
+`keep-coding-instructions: true` matters. Without it, a custom style *replaces* Claude Code's built-in software engineering instructions, the ones covering how to scope a change, when to add comments, and how to verify work. That is right for a writing assistant and wrong for a code reviewer. Anthropic's own steering guide makes the blunter version of this point: prefer a built-in style, because a custom one can quietly remove behaviour you wanted to keep.
+
+Switching styles now takes effect on your next message. Editing a style *file* still does not, because the terminal reads style files at startup, so restart Claude Code after you change one. (Before v2.1.251 even switching needed a `/clear`.)
+
+There is a lighter option than a style file. `--append-system-prompt "…"` appends to the system prompt without removing anything, which makes it the low blast radius choice for a one-off run:
+
+```bash
+claude --append-system-prompt "Lead with the command or the diff. No preamble, no recap."
+```
 
 Why not just put it in `CLAUDE.md`? Because the docs are explicit that `CLAUDE.md` arrives as a user message *after* the system prompt, with no guarantee of strict compliance. For "how you talk to me," an output style holds better. For "how this project works," `CLAUDE.md` is still the right home.
+
+### The community version, and whether it is worth it
+
+There is a popular repo doing exactly this as a Skill: [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd), around 47k stars, MIT, one Markdown file plus install manifests for roughly fifteen agents. Its ten rules are a good specification of "stop burying the answer": lead with the next action, number multi-step tasks, end with one concrete next step, cap lists at five items, no preamble and no closers. It ships `disable-model-invocation: true`, so installing it changes nothing until you type `/i-have-adhd`.
+
+Read it for the rules. Then notice what you are deciding:
+
+- The repo is honest in a way most prompt repos are not. It publishes an eval harness and its own results, and those results say the release gate **failed**: two cases regressed, `partial-success` worst. "Cap at five" and "no recap" are exactly wrong for a PR description or a handoff note, and its own numbers caught that.
+- It is a self-graded eval, same model generating and judging. Useful signal, not third-party evidence.
+- The failure mode people report is drift. A session-wide style instruction holds for a few turns and then loosens, which is the problem output styles exist to solve, because Claude Code re-sends the active style's instructions with every request and reminds Claude of a non-Default style during the conversation.
+
+So the honest comparison is not this repo against another repo. It is this repo against ten lines you write once in your own output style, which is what its own install docs hand you anyway. Take the rules, skip the dependency, unless you specifically want the cross-platform packaging.
 
 ## A community trick: ASD-STE100
 
@@ -171,6 +204,6 @@ One last shift worth knowing: for agent work, what Claude can see and verify mat
 
 Next: shape the layer around your prompt with [Context Engineering](/docs/context-engineering).
 
-**Official links:** [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) · [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) · [Console prompting tools](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools) · [Output styles](https://code.claude.com/docs/en/output-styles) · [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library)
+**Official links:** [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) · [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) · [Console prompting tools](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools) · [Output styles](https://code.claude.com/docs/en/output-styles) · [Steering Claude Code](https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more) · [CLI reference](https://code.claude.com/docs/en/cli-reference) · [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library)
 
-**Community link:** [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org)
+**Community links:** [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org) · [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd)

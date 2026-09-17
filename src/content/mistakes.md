@@ -70,6 +70,22 @@ There is a measurement behind the feeling. GitClear tracked 623 million code cha
 - **Aim at an outcome in CLAUDE.md, not a ban.** "Never write comments" competes with everything else in the context and loses at the worst moment. "Match the comment density and idiom of the surrounding code" gives the model a target it can actually hit. This is the same lesson Anthropic learned in their own system prompt, described in [Context Engineering](/docs/context-engineering).
 - **Clean up before the pull request, not during review.** A cleanup that only ever happens at review time is a cleanup you chose to run at the most expensive moment. `/code-review --fix` applies findings to your working tree, and its quality-only sibling `/simplify` handles reuse and simplification without hunting for bugs. Run either before you push, and your reviewer gets to spend their attention on the change instead of the packaging.
 
+## 13. Believing anybody's estimate, including its own
+
+Ask Claude how long a task will take and you get a number. The number is worth very little, and it is worth understanding why before you paste it into a ticket.
+
+What it is actually reporting is a **human-hours** estimate. It learned to size work from text written by people sizing work, so "this is about a day" means "a person wrote 'about a day' next to tasks that looked like this." It is not a forecast of how long the task will take *with* the tool, and often the tool finishes it in four minutes.
+
+The mirror of that error is the one you make yourself, and it has been measured. METR ran a randomised controlled trial with 16 experienced open-source developers across 246 real issues on repositories they already knew well. The developers expected AI to make them **24% faster**. Afterwards they believed it had made them **20% faster**. Measured, they were **19% slower** ([METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)).
+
+Read that with its caveats attached, because they are large. Sixteen developers, mature codebases they were expert in, and a snapshot of early-2025 tooling. METR say plainly that they do not claim it represents most software work, and they have published newer measurements since, so check the source before you quote the figure. The finding that survives is not "AI makes you slower." It is that **the gap between believed speed and measured speed was 39 percentage points, and it persisted after doing the work.** Nobody in that study noticed.
+
+**Fix:** stop asking for estimates and start counting finished work.
+
+- Ask "what are the steps and what is risky about them," never "how long will this take." The first question has an answer in the code. The second does not.
+- If you need a forecast, use your own throughput. How many tickets of roughly this size did you actually finish in the last four weeks? That number comes from your repo, and it already includes however much the tooling is helping.
+- Time one real task both ways once a quarter. It costs an afternoon and it is the only thing that corrects the 39-point gap.
+
 ## The meta-lesson
 
 Use Claude as a collaborative partner, not an autopilot. Stay engaged, always keep a check it can run against, and manage your context deliberately. Do that and you get all the speed without the sloppiness.
