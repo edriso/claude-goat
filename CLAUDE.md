@@ -19,7 +19,8 @@ This hub teaches people how Claude Code actually works, so wrong information is 
 
 ## How content pages work
 
-- One markdown file per page at `src/content/<slug>.md`, loaded raw at build time. No YAML frontmatter; start the file with a `# Heading`.
+- One markdown file per page at `src/content/<slug>.md`. No YAML frontmatter; start the file with a `# Heading`.
+- Pages load **on demand**, one chunk each, and `DocPage` (which carries the markdown renderer and the syntax highlighter) is lazy too. The sidebar and home page run entirely off `src/data/nav.js`, so nothing about a page's prose reaches the entry chunk. Adding a page is still just adding a file plus a nav entry.
 - Every page needs a matching entry in `src/data/nav.js` (`slug`, `title`, `blurb`). That single file drives the sidebar, routing, and prev/next links.
 - Internal links use `/docs/<slug>`. End each page with a `Next:` pointer to the following page and an `**Official links:**` line to the sources.
 - When you insert a page mid-section, update the neighboring pages' `Next:` lines so the guided flow stays correct.
