@@ -1,11 +1,15 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import Home from './pages/Home'
-import DocPage from './pages/DocPage'
 import NotFound from './pages/NotFound'
 import { useLocalStorage } from './hooks/useLocalStorage'
+
+// The doc page carries the markdown renderer and the syntax highlighter, which
+// the home page never needs. Loading it on demand keeps them out of the entry
+// chunk; each page's prose is a further chunk of its own (see src/content).
+const DocPage = lazy(() => import('./pages/DocPage'))
 
 export default function App() {
   const location = useLocation()
@@ -56,14 +60,33 @@ function AppContent() {
         )}
 
         <main className="min-w-0 flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/docs/:slug" element={<DocPage />} />
-            <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<Navigate to="/404" replace />} />
-          </Routes>
+          <Suspense fallback={<PageLoading />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/docs/:slug" element={<DocPage />} />
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
+    </div>
+  )
+}
+
+function PageLoading() {
+  return (
+    <div
+      className="mx-auto flex max-w-6xl gap-10 px-5 py-10 md:px-8"
+      role="status"
+      aria-label="Loading"
+    >
+      <div className="min-w-0 flex-1 animate-pulse space-y-4">
+        <div className="h-4 w-11/12 rounded bg-stone-200 dark:bg-stone-800" />
+        <div className="h-4 w-full rounded bg-stone-200 dark:bg-stone-800" />
+        <div className="h-4 w-9/12 rounded bg-stone-200 dark:bg-stone-800" />
+      </div>
+      <div className="hidden w-56 shrink-0 xl:block" />
     </div>
   )
 }
