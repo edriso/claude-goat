@@ -6,26 +6,37 @@
 
 | Model | Model ID | Context window | Speed | Best for |
 |---|---|---|---|---|
-| **Claude Fable 5** | `claude-fable-5` | 1M tokens | Slower | The hardest reasoning and long-running autonomous agents |
-| **Claude Opus 5** | `claude-opus-5` | 1M tokens | Moderate | Complex agentic coding and enterprise work (the recommended default) |
+| **Claude Fable 5.1** | `claude-fable-5-1` | 1M tokens | Slower | The hardest reasoning and long-horizon autonomous agents |
+| **Claude Opus 5.5** | `claude-opus-5-5` | 1M tokens | Moderate | Long-running agentic coding and knowledge work (the recommended default) |
 | **Claude Sonnet 5** | `claude-sonnet-5` | 1M tokens | Fast | The everyday workhorse, best balance of speed and smarts |
 | **Claude Haiku 4.5** | `claude-haiku-4-5-20251001` | 200K tokens | Fastest | Simple, high-volume, latency-sensitive tasks |
 
 All of these accept text and images and produce text, all are multilingual, and all three of the 1M models cap output at 128K tokens (Haiku at 64K).
 
-Older models stay available for a long while after they stop being current. **Opus 4.8** (`claude-opus-4-8`) is the one you are most likely to still see referenced: it is now listed as legacy, but it still runs. If a tutorial names it, the advice usually transfers to Opus 5 unchanged.
+Older models stay available for a long while after they stop being current. **Opus 5** (`claude-opus-5`) and **Fable 5** (`claude-fable-5`) are the ones you are most likely to still see referenced: both are now listed as legacy, replaced by Opus 5.5 and Fable 5.1, and both still run. Opus 4.8 and earlier are legacy too. If a tutorial names one of them, the prompting advice usually transfers, but check the API changes below before you swap the model ID.
+
+## What changed with Opus 5.5
+
+Opus 5.5 is cheaper than Opus 5 ($4 / $20 per million input / output tokens, against $5 / $25) and in Anthropic's testing on coding and knowledge-work evaluations it matches or beats Opus 5 at `high` effort while running at its own default of `medium`. Four things break if you swap the model ID in existing API code:
+
+- **Thinking cannot be turned off.** `thinking: {"type": "disabled"}` and a manual `budget_tokens` both return a 400. Omit `thinking` and lower the effort instead.
+- **Forced tool use is gone.** `tool_choice` of `any` or `tool` returns a 400. Use `auto`, say in the prompt when the tool applies, and add `strict: true` if you need schema-valid arguments.
+- **Thinking blocks are tied to the model and the conversation.** Keep your history append-only: editing an earlier message, the system prompt, or the tools list invalidates the thinking blocks after it.
+- **Computer use needs the newer toolset** on the Claude API and Google Cloud (`computer_toolset_20260801`).
+
+The first three apply to Fable 5.1 as well. The [migration guide](https://platform.claude.com/docs/en/models/opus-5-5/migration-guide) has the before and after for each.
 
 ## What a "context window" means
 
 A 1 million token context window means the top three models can consider around 555,000 words at once: a large codebase, long documents, a big conversation. Haiku's 200K window works out to around 150,000 words, which is plenty for most everyday tasks.
 
-If you compare those two numbers you will notice they imply different words-per-token. That is real, and it is worth knowing because it affects your bill. Claude models from Opus 4.7 onward use a newer tokenizer, and the same text produces roughly **30% more tokens** on them than on earlier models. So the familiar rule of thumb that a token is about three quarters of a word still holds on Haiku 4.5, but on Fable 5, Opus 5, and Sonnet 5 you should budget closer to half a word per token. Nothing is broken when a file you have been sending for months suddenly counts higher.
+If you compare those two numbers you will notice they imply different words-per-token. That is real, and it is worth knowing because it affects your bill. Claude models from Opus 4.7 onward use a newer tokenizer, and the same text produces roughly **30% more tokens** on them than on earlier models. So the familiar rule of thumb that a token is about three quarters of a word still holds on Haiku 4.5, but on Fable 5.1, Opus 5.5, and Sonnet 5 you should budget closer to half a word per token. Nothing is broken when a file you have been sending for months suddenly counts higher.
 
 ## How to pick, simply
 
 Think of it as fastest and cheapest on one end, most capable on the other:
 
-**Haiku 4.5 → Sonnet 5 → Opus 5 → Fable 5**
+**Haiku 4.5 → Sonnet 5 → Opus 5.5 → Fable 5.1**
 
 - **Haiku** for simple, speed-critical, high-volume work. "Classify this review as positive or negative."
 - **Sonnet** for most day-to-day production work where you want near-top quality at a lower cost.
@@ -46,16 +57,18 @@ The dollar figure is computed locally at standard list rates, so on a Pro or Max
 
 ## Adaptive thinking and effort
 
-The current top models (Fable 5, Opus 5, Sonnet 5) use adaptive thinking: the model itself decides whether and how much to reason on each step, based on how hard the task is. You do not micromanage that turn by turn. Fable 5 always thinks and cannot have it turned off.
+The current top models (Fable 5.1, Opus 5.5, Sonnet 5) use adaptive thinking: the model itself decides whether and how much to reason on each step, based on how hard the task is. You do not micromanage that turn by turn. Fable 5.1 and Opus 5.5 always think and cannot have it turned off, so effort is the only dial.
 
 What you *can* set is the overall **effort level**, which shifts the balance between speed and cost on one side and depth on the other. In Claude Code, run `/effort` (or use the slider inside `/model`):
 
-- `low`, `medium`, `high`, `xhigh`, from fastest and cheapest to deepest. `high` is the default and suits most coding.
+- `low`, `medium`, `high`, `xhigh`, from fastest and cheapest to deepest. `high` is the default on most models, but **Opus 5.5 defaults to `medium`**, and at that level it matches Opus 5 at `high` in Anthropic's testing. Try it before you raise it.
 - `max`, the deepest, for genuinely hard problems. It can overthink, so reach for it on purpose, not by default.
 - `ultracode` is a Claude Code extra rather than a model setting: it sends `xhigh` *and* has Claude orchestrate multi-agent workflows on substantive tasks. Expect it to spend accordingly.
 - `auto` puts it back to the model default.
 
-The first four persist across sessions; `max` and `ultracode` reset when the session ends. Effort affects every kind of token, including tool calls, so a lower level means less exploring as well as less thinking. (Haiku does not use effort.)
+The first four persist across sessions when you confirm with `Enter` (press `s` instead to apply one to this session only, v2.1.257 or later); `max` and `ultracode` reset when the session ends. Effort affects every kind of token, including tool calls, so a lower level means less exploring as well as less thinking. (Haiku does not use effort.)
+
+One upgrade trap: Claude Code now saves effort per model, so an older top-level `effortLevel` in your *user* settings does not carry over to Opus 5.5. It starts at `medium` until you pick a level for it with `/effort` or the `/model` picker. (A top-level `effortLevel` in project, local, or managed settings still applies to every model.)
 
 ### The one keyword that still matters: ultrathink
 
@@ -65,8 +78,8 @@ Do not mix up the two similar-sounding names: `ultrathink` is a one-turn keyword
 
 ## A few practical facts
 
-- **Model IDs are fixed snapshots.** `claude-opus-5` points to one specific release, not an evergreen "latest." From the 4.6 generation onward the IDs simply stopped carrying a date, and they are still pinned. Older models kept the date, which is why Haiku 4.5 is `claude-haiku-4-5-20251001`; `claude-haiku-4-5` is a convenience alias that resolves to it. Use the exact string, because a typo returns an error.
-- **In Claude Code** you switch models mid-session with `/model` and can set a default in [settings](/docs/settings).
+- **Model IDs are fixed snapshots.** `claude-opus-5-5` points to one specific release, not an evergreen "latest." From the 4.6 generation onward the IDs simply stopped carrying a date, and they are still pinned. Older models kept the date, which is why Haiku 4.5 is `claude-haiku-4-5-20251001`; `claude-haiku-4-5` is a convenience alias that resolves to it. Use the exact string, because a typo returns an error.
+- **In Claude Code** you switch models mid-session with `/model` and can set a default in [settings](/docs/settings). Out of the box, `default` is Opus 5.5 on Pro, Max, Team, Enterprise, and the API from v2.1.280 (before that, Pro got Sonnet 5).
 - **Availability.** All four are on the Claude API, plus Amazon Bedrock, Claude Platform on AWS, Google Cloud, and Microsoft Foundry (cloud providers sometimes prefix the IDs).
 
 ## Pick the model as you open the tab

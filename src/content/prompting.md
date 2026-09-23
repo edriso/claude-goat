@@ -41,7 +41,9 @@ One boundary on this. Examples are still the best way to pin down *format and st
 
 ## 5. Let Claude think
 
-For anything with real reasoning, coding, or math, give Claude room to work through it. With today's models you can simply say "think this through carefully" and ask it to check its own answer before finishing: "Before you finish, verify your solution against these criteria."
+For real reasoning, coding, or math, the lever is no longer a phrase in the prompt. Current models use adaptive thinking and decide for themselves how much to reason, and on Opus 5.5 and Fable 5.1 thinking is always on. What you control is the effort level (`/effort` in Claude Code, `output_config.effort` in the API), and changing it moves thinking more reliably than any instruction does. Anthropic's Opus 5.5 guide goes further: if your system prompt tells Claude to think carefully before answering, consider removing the line. In their chat-product testing, replies started sooner with no clear drop in quality.
+
+Self-checks follow the same curve. On most models it still pays to ask for one against concrete criteria: "Before you finish, verify your solution against these criteria." Opus 5 and Opus 5.5 check their own work without being told, though, and verification lines carried over from older prompts make them over-verify. On those, drop the ritual and keep the criteria: say what "correct" means and let the model decide how to check it.
 
 ## 6. Structure longer prompts
 
@@ -89,7 +91,7 @@ The upgrade on that habit: decide what "good" means before you start tuning. The
 
 ## Two modern gotchas
 
-- **Do not over-pressure.** Old prompts leaned on "CRITICAL, YOU MUST." Newer models over-react to that. Normal, clear phrasing works better.
+- **Do not over-pressure.** Old prompts leaned on "CRITICAL, YOU MUST." Newer models over-react to that. Normal, clear phrasing works better. The same goes for leftovers like "verify twice" and "think step by step in a scratchpad" (see section 5). `/claude-api prompt-audit` finds them for you; there is more in [Context Engineering](/docs/context-engineering).
 - **Watch for over-engineering.** Newer models sometimes add abstractions you did not ask for. If you see that, add: "Avoid over-engineering. Only make changes I asked for or that are clearly necessary."
 
 ## Make a style stick instead of re-asking
@@ -190,7 +192,7 @@ The Claude Console ships three prompt tools worth knowing:
 
 - **Prompt generator.** Describe your task and it drafts a quality first prompt using Anthropic's own best practices. The cure for the blank page problem.
 - **Templates and variables.** Mark the parts of a prompt that change per request with placeholders in `{{double brackets}}`. You get one stable template you can version, test, and reuse, instead of a pile of near-duplicate prompts.
-- **Prompt improver.** Feed it an existing prompt and it rewrites it in four steps: extract your examples, restructure with XML tags, add chain-of-thought instructions, then upgrade the examples to match. Expect more thorough but longer and slower outputs, so skip it for latency-sensitive prompts.
+- **Prompt improver.** Feed it an existing prompt and it rewrites it in four steps: extract your examples, restructure with XML tags, add chain-of-thought instructions, then upgrade the examples to match. Expect more thorough but longer and slower outputs, so skip it for latency-sensitive prompts. On Opus 5.5 or Fable 5.1, where thinking is always on, the chain-of-thought instructions it adds are exactly the kind of scaffold `prompt-audit` flags, so test the result with them removed.
 
 ## Steal working prompts
 
@@ -198,7 +200,7 @@ You do not have to write everything from scratch:
 
 - The [Claude Code prompt library](https://code.claude.com/docs/en/prompt-library) collects copy-paste prompts for real development work, tagged by phase (discover, design, build, ship, operate), task, and role. They are starting points rather than scripts, and each has a "Why this works" note on the pattern behind it.
 - The [general prompt library](https://platform.claude.com/docs/en/resources/prompt-library/library) has ready-made prompts for common non-coding tasks.
-- The best practices page opens with model-specific guides for Fable 5, Sonnet 5, Opus 5, and Opus 4.8. When you settle on a model, read its page; it covers exactly where that model behaves differently.
+- The best practices page opens with model-specific guides, from Fable 5.1 and Opus 5.5 back to Opus 4.8. When you settle on a model, read its page; it covers exactly where that model behaves differently.
 
 One last shift worth knowing: for agent work, what Claude can see and verify matters more than any phrasing trick. That layer, context and checks and workflow, is what the rest of this section teaches.
 

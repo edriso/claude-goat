@@ -4,7 +4,7 @@ If your app parses Claude's prose with regexes and hopes, it will break. The API
 
 ## Structured outputs: guaranteed JSON
 
-Pass a JSON schema in `output_config.format` and the API uses constrained decoding, so the response is guaranteed to be valid JSON matching your schema. No "respond only with JSON" begging, no retry loops for malformed output. It is generally available on Claude 4.5 and later, which covers every current model: Fable 5, Opus 5, Sonnet 5, and Haiku 4.5.
+Pass a JSON schema in `output_config.format` and the API uses constrained decoding, so the response is guaranteed to be valid JSON matching your schema. No "respond only with JSON" begging, no retry loops for malformed output. It is generally available on Claude 4.5 and later, which covers every current model: Fable 5.1, Opus 5.5, Sonnet 5, and Haiku 4.5.
 
 The TypeScript SDK pairs this with Zod: define the schema once, and `client.messages.parse()` returns a typed, validated object. Adapted from the official docs:
 
@@ -23,8 +23,8 @@ const ContactInfo = z.object({
 const client = new Anthropic();
 
 const response = await client.messages.parse({
-  model: "claude-opus-5",
-  max_tokens: 1024,
+  model: "claude-opus-5-5",
+  max_tokens: 16000,
   messages: [{
     role: "user",
     content: "Extract the key info: John Smith (john@example.com) wants the Enterprise plan and a demo next Tuesday.",
@@ -55,7 +55,7 @@ A tool is a name, a description, and a JSON Schema for its inputs:
 }
 ```
 
-The description does real work: Claude uses it to decide when to call the tool, so say when to call it, not just what it does. By default (`tool_choice: {"type": "auto"}`) Claude decides whether to call a tool; you can also force a specific tool or require that at least one is used.
+The description does real work: Claude uses it to decide when to call the tool, so say when to call it, not just what it does. By default (`tool_choice: {"type": "auto"}`) Claude decides whether to call a tool. Older guides also show forcing a tool (`tool_choice` of `any` or `tool`), but Opus 5.5 and Fable 5.1 reject that with a 400. On those models, keep `auto`, say in the prompt when the tool applies, and set `strict: true` on the tool if you need its arguments to match the schema exactly. If you were forcing a tool only to get JSON back, structured outputs is the cleaner fix.
 
 ## The tool-use loop
 

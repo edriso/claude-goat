@@ -64,6 +64,31 @@ Anthropic shipped this guidance as a command. Run `/doctor` (alias `/checkup`) i
 
 The `CLAUDE.md` trim needs Claude Code v2.1.206 or later. Note the two forms are not the same: `claude doctor` from your shell prints read-only installation diagnostics without starting a session, while the in-session `/doctor` is the full checkup that can apply fixes.
 
+## Then run `/claude-api prompt-audit`
+
+`/doctor` cuts what Claude could work out for itself. A second bundled command goes after a different problem: instructions written for an older model that now make a newer one worse. Run `/claude-api prompt-audit` in Claude Code and it scans the prompt surface of your working directory: `CLAUDE.md` and other rule files, Skills, system prompts in your app code, tool descriptions, and the request code that sends them.
+
+These are the patterns Anthropic lists:
+
+| Pattern | Looks like | What it does on a frontier model |
+|---|---|---|
+| Verification rituals | "double-check your work", "verify twice before responding" | Repeats work the model already does and spends tokens on it |
+| Emphasis boosters | "Be maximally thorough", "CRITICAL: YOU MUST ALWAYS..." | Leads to verbosity and extra tool calls |
+| Mandatory procedures | "think step by step in a scratchpad", fixed reasoning templates | Stacks on top of built-in thinking |
+| Stale examples | Few-shot examples tuned to an older model's failure modes | Teaches it to imitate long reasoning on requests that do not need it |
+| Contradictory rules | "always refund within policy" next to "never issue refunds without escalation" | Both get followed more literally, and something has to lose |
+| Dated configuration | Manual thinking budgets and other settings from an older generation | Can be rejected outright by the API |
+
+Anthropic's worked example is a customer support agent moved from Opus 4.8 to Opus 5.5. The model swap alone cut cost by around 18%, the audit took off another 9%, and accuracy rose by around 2 percentage points. The failures it removed are the useful part, because they are so ordinary. "Verify twice" repeated an order lookup on every refund. "Be maximally thorough" turned into dozens of unneeded knowledge-base searches. The contradictory refund rules made the model hold back four refunds it owed while it asked the customer to confirm. And the manual scratchpad collided with built-in thinking: on three tickets the model wrote the tool call inside its reasoning and never ran it.
+
+Three things to know before you run it:
+
+- **It reports first.** You get findings with `file:line`, the pattern, why it is dated for your target model, and a confidence level, plus a proposed diff. It only edits files if your request asks it to.
+- **It is not a length contest.** The skill's own rule is that context is never cruft: who the audience is, what the product does, the reasons behind a constraint. Exact scripts for fragile operations stay, and so do prohibitions against failures that still happen. An audit that finds nothing should change nothing.
+- **A removal is a hypothesis.** Check each contested cut against your evals, one change at a time where the stakes are high, and re-run the audit when you move to a new model.
+
+The same skill has siblings for API work: `/claude-api cost-optimize` profiles where your spend goes and proposes cuts, and `/claude-api hillclimb` tunes your app against an existing eval with a train and test split.
+
 ## Where the old rules still earn their keep
 
 "Judgement over rules" is not "delete your guardrails."
@@ -74,4 +99,4 @@ The `CLAUDE.md` trim needs Claude Code v2.1.206 or later. Note the two forms are
 
 Next: put this into practice in a real [developer workflow](/docs/workflows).
 
-**Official links:** [The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) · [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) · [Memory](https://code.claude.com/docs/en/memory) · [Commands reference](https://code.claude.com/docs/en/commands)
+**Official links:** [The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) · [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) · [Memory](https://code.claude.com/docs/en/memory) · [Reducing cost and improving performance with Claude Platform](https://claude.com/blog/reducing-cost-and-improving-performance-with-claude-platform) · [Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5) · [Commands reference](https://code.claude.com/docs/en/commands)

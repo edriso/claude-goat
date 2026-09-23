@@ -24,8 +24,8 @@ import anthropic
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from your environment
 
 response = client.messages.create(
-    model="claude-opus-5",
-    max_tokens=1024,
+    model="claude-opus-5-5",
+    max_tokens=16000,
     messages=[{"role": "user", "content": "What is the capital of France?"}],
 )
 
@@ -42,7 +42,7 @@ A few ideas explain almost everything:
 
 - **messages** is the conversation: a list of `{"role": "user" or "assistant", "content": ...}`.
 - **The API is stateless.** Claude has no memory between calls. To continue a conversation, you resend the whole history each time. This surprises everyone at first.
-- **max_tokens** caps the length of the *output*. If the answer hits the cap, it gets cut off.
+- **max_tokens** caps the length of the *output*. If the answer hits the cap, it gets cut off. On Opus 5.5 and Fable 5.1 thinking is always on and counts toward that cap even when you never see it, so do not size it for a short answer. A tight cap is the classic way to get replies that stop mid-sentence.
 - **system** sets Claude's role and behavior. Pass it as a top-level parameter: `system="You are a helpful coding assistant."`
 - **response.content is a list of blocks.** Always check `block.type` before reading `block.text`.
 
@@ -62,7 +62,7 @@ tools = [{
 }]
 
 response = client.messages.create(
-    model="claude-opus-5", max_tokens=1024, tools=tools,
+    model="claude-opus-5-5", max_tokens=16000, tools=tools,
     messages=[{"role": "user", "content": "What's the weather in Paris?"}],
 )
 # If response.stop_reason == "tool_use": run your function, then send the
@@ -77,8 +77,8 @@ For anything that produces a long answer, stream the tokens as they arrive. It f
 
 ```python
 with client.messages.stream(
-    model="claude-opus-5",
-    max_tokens=1024,
+    model="claude-opus-5-5",
+    max_tokens=16000,
     messages=[{"role": "user", "content": "Write a haiku about the sea"}],
 ) as stream:
     for text in stream.text_stream:
@@ -91,8 +91,8 @@ If you send the same big chunk repeatedly (a long system prompt, a big document,
 
 ```python
 response = client.messages.create(
-    model="claude-opus-5",
-    max_tokens=1024,
+    model="claude-opus-5-5",
+    max_tokens=16000,
     system=[{
         "type": "text",
         "text": LARGE_SHARED_DOCUMENT,
