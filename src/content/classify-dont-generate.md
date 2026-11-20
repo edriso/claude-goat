@@ -14,14 +14,15 @@ const Triage = z.object({
 })
 
 const response = await client.messages.parse({
-  model: "claude-haiku-4-5-20251001",
+  model: "claude-haiku-5-5",
   max_tokens: 16,
+  thinking: { type: "disabled" },
   messages: [{ role: "user", content: `Classify this message:\n\n${text}` }],
   output_config: { format: zodOutputFormat(Triage) },
 })
 ```
 
-Three things make that cheap rather than just correct. A small model, because classification is the task Haiku is for. A tiny `max_tokens`, because the answer is a handful of tokens and you are billed for what comes out. And an enum, so you never spend a retry on an invalid label.
+Three things make that cheap rather than just correct. A small model, because classification is the task Haiku is for. A tiny `max_tokens`, because the answer is a handful of tokens and you are billed for what comes out. Thinking off, because Haiku 5.5 thinks by default and that thinking would spend the same tiny budget before the label (it accepts `disabled` at its default `medium` effort). And an enum, so you never spend a retry on an invalid label.
 
 The mechanism underneath has a name worth knowing, because every vendor implements it and they all call it something different. Anthropic's docs describe strict tool use as constraining "the model's token sampling to schema-valid outputs (a technique called grammar-constrained sampling)". You will meet the same idea as constrained decoding, guided decoding, or logit masking. In every case the model still generates, but tokens that would break your schema are removed before it samples.
 

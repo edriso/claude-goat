@@ -57,7 +57,7 @@ who hit them by lunchtime.
 **Check the model and the effort before a long run.** Both settings persist
 across sessions, so whatever you picked for yesterday's hard problem is still on
 this morning. A whole usage window can disappear into a routine task running on
-Fable 5.1 at `xhigh` without anything looking wrong. `/model` and `/effort` take a
+Fable 5.2 at `xhigh` without anything looking wrong. `/model` and `/effort` take a
 second to read, and pinning them to your [status line](/docs/settings) means you
 never have to remember.
 

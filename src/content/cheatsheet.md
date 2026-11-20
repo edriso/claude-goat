@@ -59,7 +59,7 @@ claude doctor       # read-only setup diagnostics, no session
 
 ## Choosing a model
 
-Fastest and cheapest to most capable: **Haiku 4.5 → Sonnet 5 → Opus 5.5 → Fable 5.1.** Default to Opus for hard coding, Sonnet for everyday production, Haiku for simple high-volume tasks, Fable only when you truly need it.
+Fastest and cheapest to most capable: **Haiku 5.5 → Sonnet 5.5 → Opus 5.5 → Fable 5.2.** Default to Opus for hard coding, Sonnet for everyday production, Haiku for simple high-volume tasks, Fable only when you truly need it.
 
 ## The one prompt-quality test
 

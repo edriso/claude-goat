@@ -42,7 +42,34 @@ The older way to get this is to wire each step into an explicit graph of nodes a
 
 **Code execution with MCP (Anthropic guidance).** The same idea applied to MCP servers: expose each server as a code API the agent imports and calls, so it loads tool definitions on demand and keeps intermediate data in the execution environment. This also helps privacy, since raw data stays in the sandbox instead of passing through the prompt.
 
-**Code Mode (Cloudflare, community).** The technique that popularized the name. Rather than exposing every tool, Cloudflare's Agents SDK gives the model just two: `search`, to discover the available methods and their types, and `execute`, to run validated TypeScript against a typed SDK in a sandboxed V8 isolate, chaining the whole workflow in one pass. They report giving an agent an entire API in about 1,000 tokens, a 99.9% cut versus loading every tool definition. It is a third-party approach, not an Anthropic product, but the Anthropic features above are built on the same insight.
+**Code Mode (Cloudflare, community).** The technique that popularized the name. Rather than exposing every tool, Cloudflare's Agents SDK gives the model just two: `search`, to discover the available methods and their types, and `execute`, to run validated TypeScript against a typed SDK in a sandboxed V8 isolate, chaining the whole workflow in one pass. They report giving an agent an entire API in about 1,000 tokens, a 99.9% cut versus loading every tool definition. Cloudflare's version is third-party, but the Anthropic features above are built on the same insight, and Claude Code now has its own Code Mode, below.
+
+## Code Mode in Claude Code (official, experimental)
+
+Normally Claude Code works one tool call at a time: Claude asks for a `Bash`, `Read`, or `Edit`, reads the result, then decides the next call. With Code Mode on, Claude writes a short piece of JavaScript that makes those tool calls, Claude Code runs it in your session, and only what the script returns comes back to Claude.
+
+Take "rename the `retryPolicy` function in every file that defines one." Without Code Mode that is a search whose every hit lands in context, then a read and an edit per file. With it, Claude plans the loop once:
+
+```js
+const files = (await $`rg -l "function retryPolicy" src`.text()).trim().split("\n");
+for (const f of files) await edit(f, "function retryPolicy", "function backoffPolicy");
+```
+
+`$` runs a shell command and `edit(path, oldText, newText)` makes an edit. You still see each edit's diff in the conversation, not the code. To read the code itself, press `Ctrl+O` and expand the **Code** row.
+
+**Turning it on.** It needs Claude Code v2.1.323 or later. Set the variable for one session, or under `env` in `~/.claude/settings.json` for every session, and answer **Yes, turn on Code Mode** the first time:
+
+```bash
+CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1 claude
+```
+
+A project's settings file can't turn it on, so a repo you clone can't switch it on for you. Setting the variable to `0` anywhere keeps it off, and an organization can block it that way in managed settings.
+
+**What still guards you.** Every tool call inside the script still goes through your `deny` and `ask` rules and your `PreToolUse` hooks under its usual name (`Bash`, `Edit`, an MCP tool), and the script as a whole runs as a tool called `REPL` that hooks can match. Two differences matter. Your sandbox settings cover the shell commands the code runs, but the JavaScript itself and its file, web, and MCP calls run outside the sandbox. And in auto mode the classifier reviews each script before it runs, not each call inside it, so in auto or `bypassPermissions` mode a script can run start to finish without a prompt.
+
+**Where it works.** Only an interactive `claude` session in a terminal, on the native build, with a Claude subscription or Console account and one of the current models (Fable 5.2, Opus 5.5, Sonnet 5.5, or Haiku 5.5). Not with `-p`, the Agent SDK, the VS Code panel, the Desktop app, cloud sessions, or through Bedrock and the other cloud providers. It also refuses to start next to an API key helper, OpenTelemetry export, or `DISABLE_TELEMETRY`. A script you wait on stops after ten minutes, and a session started in Code Mode can only be resumed with it on.
+
+**When it pays off.** The docs name three cases: a change that repeats across many files, a search whose results need filtering before Claude reads them, and several independent commands that can run at the same time. The script runs as written, so keep it for mechanical work. When each answer decides the next step, the normal one-call-at-a-time loop is the better fit. It is experimental and may change or go away in any release; `/feedback` is where to report what you see.
 
 ## Why it works: use deterministic tools for deterministic work
 
@@ -50,8 +77,8 @@ Models are weak at exact, mechanical steps (this is the same reason a raw model 
 
 ## When to reach for it
 
-You do not need this for a single tool call. It earns its keep when you are chaining several calls, moving large payloads between tools, or connecting so many tools that their definitions crowd out your actual work. For everyday Claude Code use, the built-in tools already handle this well; this is the concept to understand when you start *building* agents of your own.
+You do not need this for a single tool call. It earns its keep when you are chaining several calls, moving large payloads between tools, or connecting so many tools that their definitions crowd out your actual work. For everyday Claude Code use, the built-in tools already handle this well, and Code Mode is the experimental way to try it in your own sessions. Beyond that, this is the concept to understand when you start *building* agents of your own.
 
 Next: level up how you actually work with the [Prompting Playbook](/docs/prompting).
 
-**Official links:** [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) · [Programmatic tool calling](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) · [Cloudflare Code Mode](https://blog.cloudflare.com/code-mode-mcp/) · [LangGraph quickstart](https://docs.langchain.com/oss/javascript/langgraph/quickstart)
+**Official links:** [Code Mode in Claude Code](https://code.claude.com/docs/en/code-mode) · [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) · [Programmatic tool calling](https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) · [Cloudflare Code Mode](https://blog.cloudflare.com/code-mode-mcp/) · [LangGraph quickstart](https://docs.langchain.com/oss/javascript/langgraph/quickstart)
