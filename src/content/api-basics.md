@@ -42,7 +42,7 @@ A few ideas explain almost everything:
 
 - **messages** is the conversation: a list of `{"role": "user" or "assistant", "content": ...}`.
 - **The API is stateless.** Claude has no memory between calls. To continue a conversation, you resend the whole history each time. This surprises everyone at first.
-- **max_tokens** caps the length of the *output*. If the answer hits the cap, it gets cut off. On Opus 5.5 and Fable 5.1 thinking is always on and counts toward that cap even when you never see it, so do not size it for a short answer. A tight cap is the classic way to get replies that stop mid-sentence.
+- **max_tokens** caps the length of the *output*. If the answer hits the cap, it gets cut off. On Opus 5.5 and Fable 5.2 thinking is always on and counts toward that cap even when you never see it, so do not size it for a short answer. A tight cap is the classic way to get replies that stop mid-sentence.
 - **system** sets Claude's role and behavior. Pass it as a top-level parameter: `system="You are a helpful coding assistant."`
 - **response.content is a list of blocks.** Always check `block.type` before reading `block.text`.
 
